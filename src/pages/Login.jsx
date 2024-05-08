@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { login } from "../apis/auth";
+import Toast from "../components/common/Toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -6,6 +8,20 @@ function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+
+  const handleShowToast = (type, message) => {
+    setToastType(type);
+    setToastMessage(message);
+    setShowToast(true);
+
+    // Automatically hide the toast after 3 seconds
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
   const handleEmailBlur = () => {
     if (!email.trim()) {
       setEmailError("Email is required.");
@@ -22,7 +38,7 @@ function Login() {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.trim()) {
       setEmailError("Email is required.");
     }
@@ -34,7 +50,12 @@ function Login() {
     }
     // Proceed with login logic
     // Example: Call your authentication API here
-
+    const res = await login({ email, password });
+    if (res.status === 200) {
+      window.localStorage.setItem("token", res.data);
+    } else {
+      handleShowToast("error", res.data);
+    }
     // Reset errors
     setEmailError("");
     setPasswordError("");
@@ -122,6 +143,7 @@ function Login() {
           </a>
         </div>
       </form>
+      <Toast type={toastType} message={toastMessage} show={showToast} />
     </div>
   );
 }

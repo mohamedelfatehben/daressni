@@ -7,24 +7,29 @@ import Teachers from "./pages/Teachers";
 import Groups from "./pages/Groups";
 import Payments from "./pages/Payments";
 import Students from "./pages/Students";
+import Group from "./pages/Group";
 
 function App() {
-  const connected = true;
-
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route
             path="*"
-            element={<Navigate to={connected ? "/" : "/login"} />}
+            element={
+              <Navigate
+                to={
+                  window.localStorage.getItem("token") !== "" ? "/" : "/login"
+                }
+              />
+            }
           />
-          {connected ? (
+          {window.localStorage.getItem("token") !== "" ? (
             <>
               <Route path="/" element={<Home />} />
               <Route path="/teachers" element={<Teachers />} />
               <Route path="/groups" element={<Groups />} />
-              <Route path="/groups/:id" element={<Groups />} />
+              <Route path="/groups/:id" element={<Group />} />
               <Route path="/payments" element={<Payments />} />
               <Route path="/students" element={<Students />} />
             </>

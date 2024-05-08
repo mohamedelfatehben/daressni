@@ -37,7 +37,7 @@ const Sidebar = () => {
     >
       <div className="flex gap-x-4 items-center">
         <img
-          src="./src/assets/logo.png"
+          src="/img/logo.png"
           className={`cursor-pointer duration-500 w-12 ${
             open && "rotate-[360deg]"
           }`}
@@ -68,7 +68,7 @@ const Sidebar = () => {
               }}
               href={Menu.href || "#"}
             >
-              <img src={`./src/assets/${Menu.src}.png`} className="w-8" />
+              <img src={`/img/${Menu.src}.png`} className="w-8" />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
                 {Menu.title}
               </span>
