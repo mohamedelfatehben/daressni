@@ -4,9 +4,13 @@ import { useLocation } from "react-router-dom";
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  console.log(location.pathname);
   const Menus = [
-    { title: "Home", src: "Home", href: "/", authorized: true },
+    {
+      title: "Home",
+      src: "Home",
+      href: "/",
+      authorized: window.localStorage.getItem("role") !== "admin",
+    },
     {
       title: "Teachers",
       src: "Teacher",
@@ -16,14 +20,17 @@ const Sidebar = () => {
     {
       title: "Groups",
       src: "Groups",
-      authorized: window.localStorage.getItem("role") === "teacher" || true,
-      href: "/groups",
+      authorized: window.localStorage.getItem("role") === "teacher",
+      href:
+        window.localStorage.getItem("role") === "teacher"
+          ? "/teacher/groups"
+          : "/groups",
     },
     {
       title: "Students",
       src: "students",
-      authorized: window.localStorage.getItem("role") === "admin" || true,
-      href: "/students",
+      authorized: window.localStorage.getItem("role") === "teacher",
+      href: "/" + window.localStorage.getItem("role") + "/students",
     },
   ];
 
@@ -33,7 +40,7 @@ const Sidebar = () => {
       onMouseLeave={() => setOpen(false)}
       className={` ${
         open ? "w-72" : "w-fit "
-      } bg-dark-purple h-screen p-2  pt-8 duration-300 bg-slate-600 fixed top-0 left-0`}
+      } bg-dark-purple h-screen p-2  pt-8 duration-300 bg-gray-900 fixed z-50 top-0 left-0`}
     >
       <div className="flex gap-x-4 items-center">
         <img
@@ -52,6 +59,9 @@ const Sidebar = () => {
       </div>
       <ul className="pt-6">
         {Menus.map((Menu, index) => {
+          if (!Menu.authorized) {
+            return;
+          }
           return (
             <a
               key={index}

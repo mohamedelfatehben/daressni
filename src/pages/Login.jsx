@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { login } from "../apis/auth";
+import { loginApi } from "../apis/auth";
 import Toast from "../components/common/Toast";
+import { decodeToken } from "react-jwt";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../reducers";
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -11,7 +17,6 @@ function Login() {
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("");
   const [toastMessage, setToastMessage] = useState("");
-
   const handleShowToast = (type, message) => {
     setToastType(type);
     setToastMessage(message);
@@ -37,7 +42,17 @@ function Login() {
       setPasswordError("");
     }
   };
-
+  const getRole = (roleText) => {
+    if (roleText.includes("ADMIN")) {
+      return "admin";
+    }
+    if (roleText.includes("TEACHER")) {
+      return "teacher";
+    }
+    if (roleText.includes("STUDENT")) {
+      return "student";
+    }
+  };
   const handleLogin = async () => {
     if (!email.trim()) {
       setEmailError("Email is required.");
@@ -50,9 +65,21 @@ function Login() {
     }
     // Proceed with login logic
     // Example: Call your authentication API here
-    const res = await login({ email, password });
+    const res = await loginApi({ email, password });
     if (res.status === 200) {
       window.localStorage.setItem("token", res.data);
+      //decoding the token
+      const data = decodeToken(res.data);
+      window.localStorage.setItem("email", data.sub);
+      window.localStorage.setItem("role", getRole(data.roles));
+      dispatch(
+        loginUser({
+          token: res.data,
+          email: data.sub,
+          role: getRole(data.roles),
+        })
+      );
+      navigate("/");
     } else {
       handleShowToast("error", res.data);
     }
@@ -62,7 +89,7 @@ function Login() {
   };
 
   return (
-    <div className="w-screen min-h-screen flex justify-center items-center">
+    <div className="w-screen min-h-screen flex justify-center items-center bg-gray-200">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
         onSubmit={(e) => {
@@ -142,6 +169,12 @@ function Login() {
             Forgot Password?
           </a>
         </div>
+        <p className="mt-4 text-gray-600 text-sm cursor-pointer">
+          You do not have an account?{" "}
+          <a href="/sign-up" className="text-blue-500 hover:underline">
+            Sign up here
+          </a>
+        </p>
       </form>
       <Toast type={toastType} message={toastMessage} show={showToast} />
     </div>

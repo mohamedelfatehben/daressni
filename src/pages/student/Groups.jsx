@@ -1,6 +1,6 @@
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 
-function Groups() {
+function StudentGroups() {
   // Dummy data for demonstration
   const groups = [
     {
@@ -112,4 +112,4 @@ function Groups() {
   );
 }
 
-export default Groups;
+export default StudentGroups;

@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 
 function Students() {
   // Dummy data for demonstration

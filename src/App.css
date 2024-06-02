@@ -5,3 +5,30 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  background-color: #1d4ed8; /* Tailwind's blue-500 */
+  color: white;
+}
+
+thead th {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 10; /* Ensure the header stays on top */
+}
+
+th,
+td {
+  padding: 12px; /* Adjust padding as necessary */
+  text-align: left;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Optional: Alternate row colors */
+}

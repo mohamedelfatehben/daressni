@@ -6,7 +6,14 @@ function Layout({ children }) {
   return (
     <div className="flex items-end flex-col min-h-screen">
       <Sidebar />
-      <div style={{ width: "calc(100vw - 4rem)" }} className="flex-grow">
+      <div
+        style={{
+          width: "calc(100vw - 4rem)",
+          height: "calc(100vh - 4rem)",
+          overflowY: "auto",
+        }}
+        className="flex-grow"
+      >
         <Navbar />
         {children}
       </div>
