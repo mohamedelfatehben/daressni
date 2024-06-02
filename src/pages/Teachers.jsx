@@ -1,53 +1,20 @@
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { getTeachers } from "../apis/teachers";
+import { FaNewspaper, FaUserCheck } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
 
 function Teachers() {
   // Dummy data for demonstration
-  const teachers = [
-    {
-      name: "John Doe",
-      module: "Mathematics",
-      status: "active",
-      email: "john@example.com",
-      joinDate: "2022-05-01",
-    },
-    {
-      name: "Jane Smith",
-      module: "Physics",
-      status: "inactive",
-      email: "jane@example.com",
-      joinDate: "2021-09-15",
-    },
-    {
-      name: "Jane Smith",
-      module: "Physics",
-      status: "inactive",
-      email: "jane@example.com",
-      joinDate: "2021-09-15",
-    },
-    {
-      name: "Jane Smith",
-      module: "Physics",
-      status: "active",
-      email: "jane@example.com",
-      joinDate: "2021-09-15",
-    },
-    {
-      name: "Jane Smith",
-      module: "Physics",
-      status: "inactive",
-      email: "jane@example.com",
-      joinDate: "2021-09-15",
-    },
-    {
-      name: "Jane Smith",
-      module: "Physics",
-      status: "inactive",
-      email: "jane@example.com",
-      joinDate: "2021-09-15",
-    },
-    // Add more teachers as needed
-  ];
+  const [teachers, setTeachers] = useState([]);
 
+  useEffect(() => {
+    getTeachers().then((res) => {
+      if (res.status === 200) {
+        setTeachers([...res.data]);
+      }
+    });
+  }, []);
   return (
     <Layout>
       <div className="w-full p-4">
@@ -69,9 +36,6 @@ function Teachers() {
                   Email
                 </th>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                  Join Date
-                </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -80,35 +44,50 @@ function Teachers() {
               {teachers.map((teacher, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-no-wrap">
-                    {teacher.name}
+                    {teacher.firstName + " " + teacher.lastName}
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap">
-                    {teacher.module}
+                    {teacher.moduleName}
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap">
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                        teacher.status === "active"
+                        teacher.status
                           ? "bg-green-500 text-white"
                           : "bg-red-500 text-white"
                       }`}
                     >
-                      {teacher.status}
+                      {teacher.status ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {teacher.email}
                   </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    {teacher.joinDate}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    <button className="text-indigo-600 hover:text-indigo-900 mr-2">
-                      Delete
-                    </button>
-                    <button className="text-indigo-600 hover:text-indigo-900">
-                      Display CV
-                    </button>
+                  <td className="px-6 py-4 whitespace-no-wrap flex gap-x-2 justify-center">
+                    {!teacher.status && (
+                      <>
+                        <button
+                          className="text-red-600 hover:text-red-900 cursor-pointer text-xl"
+                          title="Delete"
+                        >
+                          <MdDelete />
+                        </button>
+                        <button
+                          className="text-green-600 hover:text-green-900 cursor-pointer text-xl"
+                          title="Activate"
+                        >
+                          <FaUserCheck />
+                        </button>
+                      </>
+                    )}
+                    <a
+                      href={teacher.cv}
+                      target="_blank"
+                      className="text-indigo-600 hover:text-indigo-900 text-xl"
+                      title="Display cv"
+                    >
+                      <FaNewspaper />
+                    </a>
                   </td>
                 </tr>
               ))}

@@ -1,11 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -81,7 +75,7 @@ function App() {
             {user.role !== "admin" && <Route path="/" element={<Home />} />}
             {user.role === "admin" && (
               <>
-                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/" element={<Teachers />} />
               </>
             )}
             {user.role === "teacher" && (

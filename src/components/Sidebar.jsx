@@ -15,7 +15,7 @@ const Sidebar = () => {
       title: "Teachers",
       src: "Teacher",
       authorized: window.localStorage.getItem("role") === "admin",
-      href: "/teachers",
+      href: "/",
     },
     {
       title: "Groups",
