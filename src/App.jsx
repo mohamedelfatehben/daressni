@@ -17,7 +17,7 @@ import Students from "./pages/teacher/Students";
 import StudentGroups from "./pages/student/Groups";
 import StudentGroup from "./pages/student/Group";
 import StudentPayments from "./pages/student/Payments";
-import Teachers from "./pages/Teachers";
+import Teachers from "./pages/admin/Teachers";
 
 function App() {
   const dispatch = useDispatch();

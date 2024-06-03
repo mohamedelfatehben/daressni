@@ -1,20 +1,52 @@
 import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import { getTeachers } from "../apis/teachers";
+import Layout from "../../components/Layout";
+import { activateTeacher, getTeachers } from "../../apis/teachers";
 import { FaNewspaper, FaUserCheck } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
+import Toast from "../../components/common/Toast";
+import ActivateTeacher from "../../components/ActivateTeacher";
 
 function Teachers() {
-  // Dummy data for demonstration
+  const [teacher, setTeacher] = useState(null);
   const [teachers, setTeachers] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    getTeachers().then((res) => {
-      if (res.status === 200) {
-        setTeachers([...res.data]);
-      }
-    });
+    fetchTeachers();
   }, []);
+
+  const fetchTeachers = async () => {
+    try {
+      const res = await getTeachers();
+      if (res.status === 200) {
+        setTeachers(res.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch teachers", error);
+    }
+  };
+
+  const handleActivateTeacher = async (email) => {
+    try {
+      const response = await activateTeacher(email);
+      console.log(response);
+      setToastType("success");
+      setToastMessage("Teacher account activated successfully");
+      setShowToast(true);
+      setTeacher(null);
+      fetchTeachers(); // Refresh the list of teachers
+    } catch (error) {
+      console.error("Failed to activate teacher", error);
+      setToastType("error");
+      setToastMessage(
+        error || "An error occurred while activating the teacher"
+      );
+      setShowToast(true);
+    }
+  };
+
   return (
     <Layout>
       <div className="w-full p-4">
@@ -75,6 +107,7 @@ function Teachers() {
                         <button
                           className="text-green-600 hover:text-green-900 cursor-pointer text-xl"
                           title="Activate"
+                          onClick={() => setTeacher(teacher)}
                         >
                           <FaUserCheck />
                         </button>
@@ -84,7 +117,7 @@ function Teachers() {
                       href={teacher.cv}
                       target="_blank"
                       className="text-indigo-600 hover:text-indigo-900 text-xl"
-                      title="Display cv"
+                      title="Display CV"
                     >
                       <FaNewspaper />
                     </a>
@@ -93,7 +126,16 @@ function Teachers() {
               ))}
             </tbody>
           </table>
-        </div>{" "}
+        </div>
+        <Toast type={toastType} message={toastMessage} show={showToast} />
+        <ActivateTeacher
+          isOpen={teacher !== null}
+          close={() => {
+            setTeacher(null);
+          }}
+          teacher={teacher}
+          activate={() => handleActivateTeacher(teacher?.email)}
+        />
       </div>
     </Layout>
   );

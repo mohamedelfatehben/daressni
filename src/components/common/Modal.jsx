@@ -32,14 +32,14 @@ export default function Modal({ close, isOpen, title, content }) {
               >
                 <DialogPanel className="w-full max-w-md rounded-xl bg-white px-6 py-10 backdrop-blur-2xl relative border">
                   <span
-                    className="text-white text-lg bg-blue-600 rounded p-1 cursor-pointer absolute top-2 right-2"
+                    className="text-white text-lg bg-purple-600 rounded p-1 cursor-pointer absolute top-2 right-2"
                     onClick={close}
                   >
                     <IoIosClose />
                   </span>
                   <DialogTitle
                     as="h3"
-                    className="text-base/7 font-medium text-white text-center absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 rounded-xl px-2 py-1"
+                    className="text-base/7 font-medium text-white text-center absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-600 rounded-xl px-2 py-1"
                   >
                     {title}
                   </DialogTitle>

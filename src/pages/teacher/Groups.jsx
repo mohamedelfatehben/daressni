@@ -26,31 +26,31 @@ function Groups() {
             onClick={() => {
               setOpen(true);
             }}
-            className="bg-blue-500 hover:bg-blue-400 duration-75 text-white h-fit py-1 px-2 rounded "
+            className="bg-purple-500 hover:bg-purple-400 duration-75 text-white h-fit py-1 px-2 rounded "
           >
             Add group
           </button>
         </div>
-        <div className="overflow-auto border-2 border-blue-500 rounded max-h-[60vh]">
+        <div className="overflow-auto border-2 border-purple-500 rounded max-h-[60vh]">
           <table className="min-w-full relative">
             <thead className="sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-3 bg-blue-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Title
                 </th>
-                <th className="px-6 py-3 bg-blue-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Image
                 </th>
-                <th className="px-6 py-3 bg-blue-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Lecture Price
                 </th>
-                <th className="px-6 py-3 bg-blue-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Total Places
                 </th>
-                <th className="px-6 py-3 bg-blue-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Remaining Places
                 </th>
-                <th className="px-6 py-3 bg-blue-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Actions
                 </th>
               </tr>

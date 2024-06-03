@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { signUpApi } from "../apis/auth";
 import Toast from "../components/common/Toast";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const specialties = {
   Moy_1: "Middle School Year 1",
@@ -34,35 +35,35 @@ const modules = {
 };
 
 // Header Component
-function Header({
-  heading,
-  paragraph,
-  linkName,
-  linkUrl = "#"
-}) {
+function Header({ heading, paragraph, linkName, linkUrl = "#" }) {
   return (
     <div className="mb-10">
       <div className="flex justify-center">
         <img
           alt=""
           className="h-14 w-14"
-          src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315" />
+          src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315"
+        />
       </div>
       <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
         {heading}
       </h2>
       <p className="mt-2 text-center text-sm text-gray-600 mt-5">
-        {paragraph} {' '}
-        <Link to={linkUrl} className="font-medium text-purple-600 hover:text-purple-500">
+        {paragraph}{" "}
+        <Link
+          to={linkUrl}
+          className="font-medium text-purple-600 hover:text-purple-500"
+        >
           {linkName}
         </Link>
       </p>
     </div>
-  )
+  );
 }
 
 // Input Component
-const fixedInputClass = "rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+const fixedInputClass =
+  "rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm";
 
 function Input({
   handleChange,
@@ -75,7 +76,7 @@ function Input({
   isRequired = false,
   placeholder,
   customClass = "",
-  onBlur
+  onBlur,
 }) {
   return (
     <div className="my-5">
@@ -94,32 +95,31 @@ function Input({
         onBlur={onBlur}
       />
     </div>
-  )
+  );
 }
 
 // FormAction Component
 function FormAction({
   handleSubmit,
-  type = 'Button',
-  action = 'submit',
-  text
+  type = "Button",
+  action = "submit",
+  text,
 }) {
   return (
     <>
-      {
-        type === 'Button' ?
-          <button
-            type={action}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
-            onSubmit={handleSubmit}
-          >
-            {text}
-          </button>
-          :
-          <></>
-      }
+      {type === "Button" ? (
+        <button
+          type={action}
+          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
+          onSubmit={handleSubmit}
+        >
+          {text}
+        </button>
+      ) : (
+        <></>
+      )}
     </>
-  )
+  );
 }
 
 function SignUp() {
@@ -130,7 +130,7 @@ function SignUp() {
     password: "",
     type: "student", // Default type is 'student'
     speciality: "",
-    module: "",
+    moduleName: "",
     cv: null, // Add a cv field to store the uploaded file
   });
 
@@ -141,31 +141,12 @@ function SignUp() {
     password: "",
     type: "",
     speciality: "",
-    module: "",
+    moduleName: "",
   });
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("");
   const [toastMessage, setToastMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value, placeholder } = e.target;
-    if (!value) {
-      setErrors({
-        ...errors,
-        [name]: `${placeholder || name} is required`,
-      });
-    } else {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
-    }
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
 
   const handleBlur = (field, placeholder) => {
     if (!form[field].trim()) {
@@ -198,10 +179,11 @@ function SignUp() {
         typeof form[key] === "string" &&
         !form[key].trim() &&
         key !== "speciality" &&
-        key !== "module"
+        key !== "moduleName"
       ) {
-        newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)
-          } is required.`;
+        newErrors[key] = `${
+          key.charAt(0).toUpperCase() + key.slice(1)
+        } is required.`;
       } else {
         newErrors[key] = "";
       }
@@ -209,7 +191,7 @@ function SignUp() {
 
     if (form.type === "student" && !form.speciality.trim()) {
       newErrors.speciality = "Specialty is required.";
-    } else if (form.type === "teacher" && !form.module.trim()) {
+    } else if (form.type === "teacher" && !form.moduleName.trim()) {
       newErrors.module = "Module is required.";
     }
 
@@ -270,7 +252,10 @@ function SignUp() {
               <Input
                 handleChange={(e) => {
                   if (!e.target.value) {
-                    setErrors({ ...errors, firstName: "First name is required" });
+                    setErrors({
+                      ...errors,
+                      firstName: "First name is required",
+                    });
                   } else {
                     setErrors({ ...errors, firstName: "" });
                   }
@@ -371,7 +356,10 @@ function SignUp() {
             </div>
 
             <div className="-space-y-px">
-              <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="type"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Sign Up As:
               </label>
               <select
@@ -380,8 +368,9 @@ function SignUp() {
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
                 onBlur={() => handleBlur("type", "Account type")}
-                className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${errors.type ? "border-red-500" : ""
-                  }`}
+                className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                  errors.type ? "border-red-500" : ""
+                }`}
               >
                 <option value="student">Student</option>
                 <option value="teacher">Teacher</option>
@@ -393,17 +382,23 @@ function SignUp() {
 
             {form.type === "student" && (
               <div className="-space-y-px">
-                <label htmlFor="speciality" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="speciality"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Speciality:
                 </label>
                 <select
                   id="speciality"
                   name="speciality"
                   value={form.speciality}
-                  onChange={(e) => setForm({ ...form, speciality: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, speciality: e.target.value })
+                  }
                   onBlur={() => handleBlur("speciality", "Specialty")}
-                  className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${errors.speciality ? "border-red-500" : ""
-                    }`}
+                  className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    errors.speciality ? "border-red-500" : ""
+                  }`}
                 >
                   <option value="">Select a specialty</option>
                   {Object.keys(specialties).map((key) => (
@@ -413,24 +408,32 @@ function SignUp() {
                   ))}
                 </select>
                 {errors.speciality && (
-                  <p className="mt-2 text-sm text-red-600">{errors.speciality}</p>
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.speciality}
+                  </p>
                 )}
               </div>
             )}
 
             {form.type === "teacher" && (
               <div className="-space-y-px">
-                <label htmlFor="module" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="moduleName"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Module:
                 </label>
                 <select
-                  id="module"
-                  name="module"
-                  value={form.module}
-                  onChange={(e) => setForm({ ...form, module: e.target.value })}
-                  onBlur={() => handleBlur("module", "Module")}
-                  className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${errors.module ? "border-red-500" : ""
-                    }`}
+                  id="moduleName"
+                  name="moduleName"
+                  value={form.moduleName}
+                  onChange={(e) =>
+                    setForm({ ...form, moduleName: e.target.value })
+                  }
+                  onBlur={() => handleBlur("moduleName", "Module")}
+                  className={`mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    errors.module ? "border-red-500" : ""
+                  }`}
                 >
                   <option value="">Select a module</option>
                   {Object.keys(modules).map((key) => (
@@ -439,15 +442,20 @@ function SignUp() {
                     </option>
                   ))}
                 </select>
-                {errors.module && (
-                  <p className="mt-2 text-sm text-red-600">{errors.module}</p>
+                {errors.moduleName && (
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.moduleName}
+                  </p>
                 )}
               </div>
             )}
 
             {form.type === "teacher" && (
               <div className="-space-y-px">
-                <label htmlFor="cv" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="cv"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Upload CV:
                 </label>
                 <input
@@ -465,7 +473,9 @@ function SignUp() {
           </form>
         ) : (
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <p className="text-green-600 text-lg text-center">{successMessage}</p>
+            <p className="text-green-600 text-lg text-center">
+              {successMessage}
+            </p>
           </div>
         )}
 
