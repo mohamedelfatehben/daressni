@@ -17,6 +17,7 @@ export const getTeacherGroups = async (idTeacher) => {
     throw error.response?.data;
   }
 };
+
 export const addGroup = async (groupe) => {
   try {
     const response = await axios.post(
@@ -58,6 +59,23 @@ export const getTeacherGroup = async (idTeacher, idGroup) => {
       `${
         import.meta.env.VITE_GATEWAY_URL
       }/cours/api/v1/teacher-groupe/${idGroup}?idTeacher=${idTeacher}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
+export const updateGroup = async (idGroup, payload) => {
+  try {
+    const response = await axios.patch(
+      `${import.meta.env.VITE_GATEWAY_URL}/cours/api/v1/groupes/${idGroup}`,
+      payload,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("token")}`,

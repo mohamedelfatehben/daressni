@@ -18,6 +18,7 @@ import StudentGroups from "./pages/student/Groups";
 import StudentGroup from "./pages/student/Group";
 import StudentPayments from "./pages/student/Payments";
 import Teachers from "./pages/admin/Teachers";
+import Documents from "./pages/teacher/Documents";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,23 +45,28 @@ function App() {
       getInfoData(
         window.localStorage.getItem("role"),
         window.localStorage.getItem("email")
-      ).then((res) => {
-        if (res.status === 200) {
-          if (window.localStorage.getItem("role") === "teacher") {
-            window.localStorage.setItem("module", res.data.moduleName);
-          } else if (window.localStorage.getItem("role") === "students") {
-            window.localStorage.setItem("specialty", res.data.speciality);
+      )
+        .then((res) => {
+          if (res.status === 200) {
+            if (window.localStorage.getItem("role") === "teacher") {
+              window.localStorage.setItem("module", res.data.moduleName);
+            } else if (window.localStorage.getItem("role") === "students") {
+              window.localStorage.setItem("specialty", res.data.speciality);
+            }
+            dispatch(
+              setUserInfo({
+                name: res.data.firstName + " " + res.data.lastName,
+                id: res.data.id,
+              })
+            );
           }
-          dispatch(
-            setUserInfo({
-              name: res.data.firstName + " " + res.data.lastName,
-              id: res.data.id,
-            })
-          );
-        } else {
-          handleLogout();
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.statusText === "Unauthorized") {
+            handleLogout();
+          }
+        });
     }
   }, [user.token]);
   return (
@@ -84,6 +90,7 @@ function App() {
                 <Route path="/teacher/groups/:id" element={<Group />} />
                 <Route path="/teacher/payments" element={<Payments />} />
                 <Route path="/teacher/students" element={<Students />} />
+                <Route path="/teacher/documents" element={<Documents />} />
               </>
             )}
             {user.role === "student" && (

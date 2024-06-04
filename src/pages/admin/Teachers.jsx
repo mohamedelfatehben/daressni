@@ -36,6 +36,9 @@ function Teachers() {
       setToastMessage("Teacher account activated successfully");
       setShowToast(true);
       setTeacher(null);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
       fetchTeachers(); // Refresh the list of teachers
     } catch (error) {
       console.error("Failed to activate teacher", error);
@@ -44,6 +47,9 @@ function Teachers() {
         error || "An error occurred while activating the teacher"
       );
       setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
     }
   };
 

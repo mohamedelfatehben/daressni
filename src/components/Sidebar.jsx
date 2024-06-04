@@ -32,6 +32,12 @@ const Sidebar = () => {
       authorized: window.localStorage.getItem("role") === "teacher",
       href: "/" + window.localStorage.getItem("role") + "/students",
     },
+    {
+      title: "Documents",
+      src: "documents",
+      authorized: window.localStorage.getItem("role") === "teacher",
+      href: "/" + window.localStorage.getItem("role") + "/documents",
+    },
   ];
 
   return (
