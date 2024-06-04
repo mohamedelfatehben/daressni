@@ -6,7 +6,32 @@ import AddGroupe from "./AddGroupe";
 
 function Groups() {
   const [open, setOpen] = useState(false);
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState([
+    {
+      idGroupe: 1,
+      name: "Group 1",
+      image: "https://placehold.co/600x400",
+      lecturePrice: 500,
+      max: 20,
+      students: [1, 2, 3, 4, 5],
+    },
+    {
+      idGroupe: 2,
+      name: "Group 2",
+      image: "https://placehold.co/600x400",
+      lecturePrice: 400,
+      max: 15,
+      students: [1, 2, 3],
+    },
+    {
+      idGroupe: 3,
+      name: "Group 3",
+      image: "https://placehold.co/600x400",
+      lecturePrice: 600,
+      max: 25,
+      students: [1, 2, 3, 4, 5, 6, 7],
+    },
+  ]);
   const user = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -91,7 +116,7 @@ function Groups() {
               ))}
             </tbody>
           </table>
-        </div>{" "}
+        </div>
       </div>
       <AddGroupe
         isOpen={open}

@@ -7,7 +7,26 @@ import DeleteDocument from "./DeleteDocument";
 
 function Documents() {
   const [open, setOpen] = useState(false);
-  const [documents, setDocuments] = useState([]);
+  const [documents, setDocuments] = useState([
+    {
+      idDocument: 1,
+      name: "Document 1",
+      link: "http://example.com/doc1",
+      idTeacher: 1,
+    },
+    {
+      idDocument: 2,
+      name: "Document 2",
+      link: "http://example.com/doc2",
+      idTeacher: 1,
+    },
+    {
+      idDocument: 3,
+      name: "Document 3",
+      link: "http://example.com/doc3",
+      idTeacher: 1,
+    },
+  ]);
   const [documentToDelete, setDocumentToDelete] = useState(null); // Track document to delete
   const user = useSelector((state) => state.authReducer);
 
