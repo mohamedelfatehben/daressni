@@ -44,21 +44,19 @@ const Sidebar = () => {
     <div
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      className={` ${
-        open ? "w-72" : "w-fit "
-      } bg-dark-purple h-screen p-2  pt-8 duration-300 bg-gray-900 fixed z-50 top-0 left-0`}
+      className={`${open ? "w-64" : "w-20"
+        } bg-white shadow-md h-screen p-5 pt-8 duration-300 fixed z-50 top-0 left-0 border-r border-gray-200`}
     >
-      <div className="flex gap-x-4 items-center">
+      <div className="flex items-center justify-center">
         <img
-          src="/img/logo.png"
-          className={`cursor-pointer duration-500 w-12 ${
-            open && "rotate-[360deg]"
-          }`}
+          src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315"
+          className={`cursor-pointer duration-500 w-12 ${open && "rotate-[360deg]"
+            }`}
+          alt="logo"
         />
         <h1
-          className={`text-white origin-left font-medium text-xl duration-200 ${
-            !open && "hidden"
-          }`}
+          className={`text-gray-900 origin-left font-extrabold text-xl duration-200 ml-4 ${!open && "hidden"
+            }`}
         >
           Daressni
         </h1>
@@ -66,29 +64,24 @@ const Sidebar = () => {
       <ul className="pt-6">
         {Menus.map((Menu, index) => {
           if (!Menu.authorized) {
-            return;
+            return null;
           }
           return (
-            <a
-              key={index}
-              className={`flex rounded-md p-2 cursor-pointer hover:bg-slate-500 text-gray-300 hover:text-white text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                location === Menu.href && "bg-slate-500"
-              } 
-            ${location.pathname === Menu?.href && "text-white"}
-            `}
-              onClick={() => {
-                if (Menu.onClick) {
-                  Menu.onClick();
-                }
-              }}
-              href={Menu.href || "#"}
-            >
-              <img src={`/img/${Menu.src}.png`} className="w-8" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
-            </a>
+            <li key={index} className="mb-2">
+              <a
+                href={Menu.href || "#"}
+                className={`flex items-center p-2 text-gray-700 hover:bg-purple-100 hover:text-purple-700 rounded-md transition-colors duration-200 ${location.pathname === Menu.href ? "bg-purple-200 text-purple-700" : ""
+                  }`}
+              >
+                <img src={`/img/${Menu.src}.png`} className="w-6" alt={`${Menu.title} icon`} />
+                <span
+                  className={`ml-4 origin-left duration-200 ${!open && "hidden"
+                    }`}
+                >
+                  {Menu.title}
+                </span>
+              </a>
+            </li>
           );
         })}
       </ul>

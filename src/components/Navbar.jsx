@@ -3,6 +3,8 @@ import { getInfoData } from "../apis/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../reducers";
+import { IoIosLogOut } from "react-icons/io";
+
 
 function Navbar() {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ function Navbar() {
     );
     navigate("/login");
   };
+
   const getData = async () => {
     const res = await getInfoData(
       window.localStorage.getItem("role"),
@@ -34,37 +37,49 @@ function Navbar() {
       setName(res.data.firstName + " " + res.data.lastName);
     }
   };
+
   useEffect(() => {
     getData();
   }, []);
+
   return (
-    <div className="flex justify-between w-full px-4 py-2 shadow-lg">
-      <div className="capitalize">
-        {window.localStorage.getItem("role")}
+    <div className="flex justify-between items-center w-full px-6 py-3 shadow-lg bg-white">
+      <div className="flex items-center gap-2 text-gray-700">
+        <span className="capitalize font-medium">
+          {window.localStorage.getItem("role")}
+        </span>
         {window.localStorage.getItem("role") === "teacher" ? (
-          <span className="text-xs mx-1">
+          <span className="text-sm text-gray-500">
             ({window.localStorage.getItem("module")})
           </span>
-        ) : window.localStorage.getItem("role") === "teacher" ? (
-          <span className="text-xs mx-1">
+        ) : window.localStorage.getItem("role") === "student" ? (
+          <span className="text-sm text-gray-500">
             ({window.localStorage.getItem("specialty")})
           </span>
         ) : (
           ""
         )}
-        {name && ` : ${name}`}{" "}
+        {name && (
+          <span className="text-sm text-gray-700">
+            : {name}
+          </span>
+        )}
       </div>
-      <div className="font-semibold flex gap-x-4">
-        {/* {window.localStorage.getItem("role") === "student" && ( */}
-        <span>Balance : 2000 Da</span>
-        {/* )} */}
-        <span>|</span>
-        <img
-          src="/logout.png"
-          alt=""
-          className="w-6 cursor-pointer"
+      <div className="flex items-center gap-6">
+        {window.localStorage.getItem("role") === "student" && (
+          <span className="text-gray-700 font-semibold">
+            Balance: 2000 Da
+          </span>
+        )}
+        <button
           onClick={handleLogout}
-        />
+          className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400"
+        >
+          Logout
+
+          <IoIosLogOut className="text-white text-lg" />
+
+        </button>
       </div>
     </div>
   );

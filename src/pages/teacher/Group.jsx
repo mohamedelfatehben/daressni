@@ -72,7 +72,6 @@ function Group() {
       max: groupInfo.max,
     };
 
-    console.log(user.id);
     try {
       const response = await updateGroup(id, payload);
       if (response.status === 200) {
@@ -111,11 +110,11 @@ function Group() {
 
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row w-full p-4">
+      <div className="flex flex-col md:flex-row w-full p-6 ">
         <div className="w-full md:w-1/2 pr-4">
-          <h2 className="text-2xl font-bold mb-4">Group Information</h2>
+          <h2 className="text-2xl font-bold mb-6">Group Information</h2>
           <form>
-            <div className="mb-4">
+            <div className="mb-6">
               <label
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
@@ -131,7 +130,7 @@ function Group() {
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-6">
               <label
                 htmlFor="lecturePrice"
                 className="block text-sm font-medium text-gray-700"
@@ -147,7 +146,7 @@ function Group() {
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-6">
               <label
                 htmlFor="max"
                 className="block text-sm font-medium text-gray-700"
@@ -167,27 +166,27 @@ function Group() {
               type="button"
               onClick={handleSave}
               disabled={!isModified}
-              className="bg-blue-500 hover:bg-blue-400 duration-75 text-white px-4 py-2 rounded mt-2 disabled:cursor-not-allowed disabled:bg-blue-400 mx-auto"
+              className="bg-purple-500 hover:bg-purple-400 duration-75 text-white px-4 py-2 rounded mt-2 disabled:cursor-not-allowed disabled:bg-purple-400"
             >
               Save
             </button>
           </form>
         </div>
         <div className="w-full md:w-1/2 pl-4">
-          <h2 className="text-2xl font-bold mb-4">Students</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
+          <h2 className="text-2xl font-bold mb-6">Students</h2>
+          <div className="overflow-x-auto border-2 border-purple-500 rounded max-h-[60vh]">
+            <table className="min-w-full relative">
+              <thead className="sticky top-0 z-10">
                 <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y">
+              <tbody className="bg-white divide-y divide-gray-200">
                 {groupInfo.students.map((student) => (
                   <tr key={student.id}>
                     <td className="px-6 py-4 whitespace-no-wrap">
@@ -208,40 +207,36 @@ function Group() {
           </div>
         </div>
       </div>
-      <div className="w-full p-4">
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-bold mb-4">Lectures</h2>
+      <div className="w-full p-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold mb-6">Lectures</h2>
           <button
             onClick={() => setOpen(true)}
-            className="bg-blue-500 hover:bg-blue-400 duration-75 text-white h-fit py-1 px-2 rounded"
+            className="bg-purple-500 hover:bg-purple-400 duration-75 text-white h-fit py-1 px-2 rounded"
           >
             Add lecture
           </button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead>
+        <div className="overflow-x-auto border-2 border-purple-500 rounded max-h-[60vh]">
+          <table className="min-w-full relative">
+            <thead className="sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Title
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 bg-purple-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Conference Video
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y">
+            <tbody className="bg-white divide-y divide-gray-200">
               {lecturesList.map((lecture, i) => (
                 <tr key={i}>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    {lecture.title}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    {formatDateTime(lecture.date)}
-                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap">{lecture.title}</td>
+                  <td className="px-6 py-4 whitespace-no-wrap">{formatDateTime(lecture.date)}</td>
                   <td className="px-6 py-4 whitespace-no-wrap text-center">
                     <button className="bg-blue-500 text-white px-2 py-1 rounded">
                       View Video

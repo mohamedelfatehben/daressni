@@ -3,6 +3,13 @@ import Layout from "../../components/Layout";
 import { getTeacherGroups } from "../../apis/groups";
 import { useSelector } from "react-redux";
 import AddGroupe from "./AddGroupe";
+import { FaInfoCircle } from "react-icons/fa";
+
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+
+
+
 
 function Groups() {
   const [open, setOpen] = useState(false);
@@ -45,71 +52,45 @@ function Groups() {
   return (
     <Layout>
       <div className="w-full p-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold mb-6">Groups</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-extrabold text-gray-900">Groups</h1>
           <button
-            onClick={() => {
-              setOpen(true);
-            }}
-            className="bg-purple-500 hover:bg-purple-400 duration-75 text-white h-fit py-1 px-2 rounded "
+            onClick={() => setOpen(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
           >
-            Add group
+            Add Group
           </button>
         </div>
-        <div className="overflow-auto border-2 border-purple-500 rounded max-h-[60vh]">
-          <table className="min-w-full relative">
-            <thead className="sticky top-0 z-10">
+        <div className="overflow-auto border border-gray-300 rounded-lg shadow-lg max-h-[60vh]">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-purple-600 text-white">
               <tr>
-                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Image
-                </th>
-                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Lecture Price
-                </th>
-                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Total Places
-                </th>
-                <th className="px-6 py-3 bg-purple-500 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Remaining Places
-                </th>
-                <th className="px-6 py-3 bg-purple-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Title</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Image</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Lecture Price</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total Places</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Remaining Places</th>
+                <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {groups?.map((group, index) => (
                 <tr key={index}>
-                  <td className="px-6 py-4 whitespace-no-wrap">{group.name}</td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    <img
-                      src={group.image || "https://placehold.co/600x400"}
-                      alt={group.name}
-                      className="h-12 w-12"
-                    />
+                  <td className="px-6 py-4 whitespace-nowrap">{group.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <img src={group.image || "https://placehold.co/600x400"} alt={group.name} className="h-12 w-12 rounded-md" />
                   </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    {group.lecturePrice} DA
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">{group.max}</td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    {+group.max - +group.students.length}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap flex gap-x-2 justify-center">
-                    <a
-                      href={`/teacher/groups/${group.idGroupe}`}
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      More
-                    </a>
-                    <button className="text-indigo-600 hover:text-indigo-900">
-                      Edit
+                  <td className="px-6 py-4 whitespace-nowrap">{group.lecturePrice} DA</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{group.max}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{+group.max - +group.students.length}</td>
+                  <td className="px-6 py-4 whitespace-nowrap flex gap-x-2 justify-center">
+                    <button><a href={`/teacher/groups/${group.idGroupe}`} className="text-purple-600 text-lg hover:text-purple-900 text-lg"><FaInfoCircle />
+
+
+                    </a></button>
+                    <button className="text-blue-600 text-lg hover:text-blue-900 text-lg"><FaEdit />
                     </button>
-                    <button className="text-indigo-600 hover:text-indigo-900 mr-2">
-                      Delete
+                    <button className="text-red-600 text-lg hover:text-red-900 text-lg"><MdDelete />
                     </button>
                   </td>
                 </tr>
@@ -120,9 +101,7 @@ function Groups() {
       </div>
       <AddGroupe
         isOpen={open}
-        close={() => {
-          setOpen(false);
-        }}
+        close={() => setOpen(false)}
       />
     </Layout>
   );
