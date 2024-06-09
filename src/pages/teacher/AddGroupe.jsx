@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "../../components/common/Modal";
 import { addGroup, getTeacherModules } from "../../apis/groups";
 import { useSelector } from "react-redux";
-import { specialties } from "../../utils";
+import { specialties } from "../../utils/index";
 
 const daysOfWeek = [
   "Monday",

@@ -28,6 +28,7 @@ const Sidebar = () => {
           ? "/student/groups"
           : "/groups",
     },
+
     {
       title: "Students",
       src: "students",
@@ -40,6 +41,12 @@ const Sidebar = () => {
       authorized: window.localStorage.getItem("role") === "teacher",
       href: "/" + window.localStorage.getItem("role") + "/documents",
     },
+    {
+      title: "Forums",
+      src: "Forums",
+      authorized: true, 
+      href: "/forum", 
+    }
   ];
 
   return (
@@ -83,7 +90,7 @@ const Sidebar = () => {
               >
                 <img
                   src={`/img/${Menu.src}.png`}
-                  className="w-6"
+                  className='w-6'
                   alt={`${Menu.title} icon`}
                 />
                 <span

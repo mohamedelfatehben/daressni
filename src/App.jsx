@@ -21,9 +21,10 @@ import Documents from "./pages/teacher/Documents";
 import AdminGroups from "./pages/admin/Groups";
 import { logoutUser, setUserInfo } from "./redux/user";
 import { setWalletInfo } from "./redux/wallet";
-import ForumHome from "./pages/forum/ForumHome";
-import Forum from "./pages/forum/Forum";
+import ForumHome from "./pages/forum/pages/ForumHome";
+import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
+import CreatePost from "./pages/forum/pages/CreatePost";
 
 function App() {
   const dispatch = useDispatch();
@@ -108,8 +109,7 @@ function App() {
               <>
                 <Route path="/" element={<Teachers />} />
                 <Route path="/groups" element={<AdminGroups />} />
-                <Route path="/forum" element={<ForumHome />} />
-                <Route path="/forum/:id" element={<Forum />} />
+                
               </>
             )}
             {user.role === "teacher" && (
@@ -119,6 +119,9 @@ function App() {
                 <Route path="/teacher/payments" element={<Payments />} />
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
+                <Route path="/forum" element={<ForumHome />} />
+                <Route path="/forum/:id" element={<Forum />} />
+                <Route path="/forum/create" element={<CreatePost/>}/>
               </>
             )}
             {user.role === "student" && (
@@ -126,6 +129,11 @@ function App() {
                 <Route path="/student/groups" element={<StudentGroups />} />
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
+                <Route path="/forum" element={<ForumHome />} >
+                  <Route path="/forum/:id" element={<Forum />} />
+                  <Route path="/forum/create" element={<CreatePost/>}/>
+                </Route>
+
               </>
             )}
           </>
