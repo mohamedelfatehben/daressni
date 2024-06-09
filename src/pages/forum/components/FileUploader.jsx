@@ -6,9 +6,18 @@ const FileUploader = ({ fieldChange, mediaUrl }) => {
   const [fileUrl, setFileUrl] = useState(mediaUrl || ''); // Store URL of selected file or provided mediaUrl
 
   const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
     setFile(acceptedFiles);
-    fieldChange(acceptedFiles);
-    setFileUrl(URL.createObjectURL(acceptedFiles[0])); // Set URL of the first accepted file
+    const reader = new FileReader();
+    
+    reader.onloadend = () => {
+      const arrayBuffer = reader.result;
+      const bytes = new Uint8Array(arrayBuffer);
+      fieldChange(bytes); // Send the byte array to the form field
+      setFileUrl(URL.createObjectURL(file)); // For display purposes
+    };
+    
+    reader.readAsArrayBuffer(file); // Read file as array buffer
   }, [fieldChange]);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -41,7 +50,7 @@ const FileUploader = ({ fieldChange, mediaUrl }) => {
           />
           <h3 className="base-medium text-light-2 mb-2 mt-6">Drag photo here</h3>
           <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
-          <button className="h-12 bg-[#1F1F22] px-5 text-light-1 flex gap-2  rounded-2xl items-center">
+          <button className="h-12 bg-[#1F1F22] px-5 text-light-1 flex gap-2 rounded-2xl items-center">
             Select from computer
           </button>
         </div>
