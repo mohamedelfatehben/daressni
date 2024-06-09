@@ -137,14 +137,14 @@ function Groups() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{group.max}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {+group.max - +group.students.length}
+                      {+group.max - +group.students?.length}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Excerpted
                         length={16}
                         text={
-                          specialties[`${group.module.speciality.name}`] ||
-                          group.module.speciality.name
+                          specialties[`${group.module?.speciality?.name}`] ||
+                          group.module?.speciality?.name
                         }
                         bottom={true}
                       />

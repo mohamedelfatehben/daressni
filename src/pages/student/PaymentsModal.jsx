@@ -4,7 +4,7 @@ import Modal from "../../components/common/Modal";
 import { getStudentsPaymentsInGroup, payLecture } from "../../apis/payments";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/common/Spinner";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const PaymentsModal = ({ isOpen, close, group, lectures }) => {
   const user = useSelector((state) => state.authReducer);
@@ -84,7 +84,6 @@ const PaymentsModal = ({ isOpen, close, group, lectures }) => {
       title={`Payments for ${group?.name}`}
       content={
         <div>
-          <ToastContainer theme="colored" />
           <div className="overflow-x-auto border-2 border-purple-500 rounded max-h-[60vh]">
             <table className="min-w-full divide-y divide-gray-200">
               <thead>

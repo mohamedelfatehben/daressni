@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 
+import { FaCheck, FaPlus } from "react-icons/fa6";
+
 function CourseCard({
   title,
   module,
@@ -27,16 +29,26 @@ function CourseCard({
           Lecture Price: {lecturePrice} DA
         </p>
         {window.localStorage.getItem("role") === "student" &&
+          !joined &&
           remainingPlaces > 0 && (
             <div className="flex justify-center">
               <button
-                className="bg-blue-500 mx-auto text-white px-4 py-2 rounded mt-2"
+                className="bg-purple-600 hover:opacity-80 mx-auto text-white px-2 py-1 rounded flex gap-x-1 items-center"
                 onClick={JoinGroup}
               >
-                Join
+                <span>Join</span>
+                <FaPlus />
               </button>
             </div>
           )}
+        {joined && (
+          <div className="flex justify-center">
+            <span className="bg-green-500 text-white px-2 py-1 rounded flex gap-x-1 items-center">
+              <span>Member</span>
+              <FaCheck />
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

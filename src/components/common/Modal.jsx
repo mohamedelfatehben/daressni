@@ -7,6 +7,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { IoIosClose } from "react-icons/io";
+import { ToastContainer } from "react-toastify";
 
 export default function Modal({ close, isOpen, title, content }) {
   return (
@@ -21,6 +22,7 @@ export default function Modal({ close, isOpen, title, content }) {
           __demoMode
         >
           <div className="fixed inset-0 z-50 w-screen overflow-y-auto bg-black/30">
+            <ToastContainer theme="colored" />
             <div className="flex min-h-full items-center justify-center p-4">
               <TransitionChild
                 enter="ease-out duration-300"
