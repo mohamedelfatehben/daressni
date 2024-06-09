@@ -22,6 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/utils/ui/select";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getStudentGroups, getTeacherGroups } from "@/apis/groups";
+import { useToast } from "@/utils/ui/use-toast";
+import { ToastAction } from "@/utils/ui/toast";
+import { createPost } from "@/apis/forum";
 
 // Validation schema
 const PostValidation = z.object({
@@ -30,23 +36,86 @@ const PostValidation = z.object({
     .string()
     .min(5, { message: "Minimum 5 characters." })
     .max(2200, { message: "Maximum 2,200 characters" }),
-  image: z.custom(() => true), // Adjusted for JavaScript
+  image: z.string().nonempty({ message: "Image is required" }), // Adjusted for Base64 string
   group: z.string().min(1, { message: "This field is required" }),
 });
 
 const PostForm = ({ post, action }) => {
+  const { toast } = useToast();
+  const user = useSelector((state) => state.authReducer);
+  const navigate = useNavigate();
+
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    if (user.userId) {
+      if (user.role === "student") {
+        getStudentGroups(user.userId).then((res) => {
+          if (res.status === 200) {
+            setGroups(res.data);
+          }
+        });
+      } else {
+        getTeacherGroups(user.userId).then((res) => {
+          if (res.status === 200) {
+            setGroups(res.data);
+          }
+        });
+      }
+    }
+  }, [user.userId, user.role]);
+
   const form = useForm({
     resolver: zodResolver(PostValidation),
     defaultValues: {
       postTitle: post ? post.postTitle : "",
       postContent: post ? post.postContent : "",
-      image: post ? post.image : [],
+      image: post ? post.image : "",
       group: post ? post.group : "",
     },
   });
 
   const onSubmit = async (values) => {
-    console.log(values);
+    const postDto = {
+      postTitle: values.postTitle,
+      postContent: values.postContent,
+      image: values.image,
+      userDto: {
+        username: user.name,
+        email: user.email,
+        idUserGroup: values.group,
+      },
+    };
+
+    // Check if any fields are empty
+    if (!postDto.postTitle || !postDto.postContent || !postDto.image || !postDto.userDto.idUserGroup) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Please check the information in the form.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      return;
+    }
+
+    try {
+      const response = await createPost(postDto);
+      if (response.status === 201) {
+        console.log(response.data);
+        toast({
+          variant: "success",
+          title: "Post created successfully!",
+        });
+        navigate('/forum'); // Redirect to another page if needed
+      }
+    } catch (error) {
+      console.error("Error adding document:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An error occurred while adding the document.",
+      });
+    }
   };
 
   return (
@@ -62,7 +131,7 @@ const PostForm = ({ post, action }) => {
             <FormItem>
               <FormLabel>Post Title</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Post Title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,12 +151,11 @@ const PostForm = ({ post, action }) => {
           )}
         />
         <FormField
-          className=""
           control={form.control}
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>add photo</FormLabel>
+              <FormLabel>Add photo</FormLabel>
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
@@ -118,10 +186,11 @@ const PostForm = ({ post, action }) => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectItem value="general">general</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                      {groups.map((group) => (
+                        <SelectItem key={group.id} value={group.id}>
+                          {group.title}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -131,11 +200,11 @@ const PostForm = ({ post, action }) => {
           )}
         />
         <div className="flex gap-4 justify-end items-center">
-          <Button type="button" className="w-24 text-lg">
+          <Button type="button" className="w-24 text-lg" onClick={() => navigate('/')}>
             Cancel
           </Button>
           <Button type="submit" className="bg-purple-600 w-24 text-lg">
-            Create
+            {action}
           </Button>
         </div>
       </form>

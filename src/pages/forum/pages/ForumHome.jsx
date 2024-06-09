@@ -8,30 +8,13 @@ function ForumHome() {
 
   const navigate = useNavigate();
 
-  const [isScrolled, setIsScrolled] = useState(false);
+  
 
-  const handleScroll = () => {
-    if (window.scrollY > 1) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
-  console.log(isScrolled)
-
-  useEffect(() => {}, []);
-  return (<Layout>
-           <div className={` flex flex-1  items-center w-full h-14 fixed ${isScrolled ? 'top-0' :'top-16'} pl-36 left-0 hover:bg-purple-600 bg-purple-400 backdrop-blur-md rounded-b-md shadow-md`} 
+  return (<Layout >
+           <div className={` flex flex-1  items-center w-full h-14  pl-36 left-0 hover:bg-purple-600 bg-purple-400 backdrop-blur-md rounded-b-md shadow-md `} 
            onMouseEnter={()=>setHoverd(true)}
            onMouseLeave={()=>setHoverd(false)}
            >

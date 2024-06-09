@@ -25,6 +25,7 @@ import ForumHome from "./pages/forum/pages/ForumHome";
 import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
 import CreatePost from "./pages/forum/pages/CreatePost";
+import { Toaster } from "./utils/ui/toaster";
 
 function App() {
   const dispatch = useDispatch();
@@ -122,6 +123,7 @@ function App() {
                 <Route path="/forum" element={<ForumHome />} />
                 <Route path="/forum/:id" element={<Forum />} />
                 <Route path="/forum/create" element={<CreatePost/>}/>
+                
               </>
             )}
             {user.role === "student" && (
@@ -133,7 +135,7 @@ function App() {
                   <Route path="/forum/:id" element={<Forum />} />
                   <Route path="/forum/create" element={<CreatePost/>}/>
                 </Route>
-
+                
               </>
             )}
           </>
@@ -144,6 +146,7 @@ function App() {
           </>
         )}
       </Routes>
+      <Toaster/>
     </BrowserRouter>
   );
 }

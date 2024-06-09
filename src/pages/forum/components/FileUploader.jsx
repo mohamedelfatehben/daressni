@@ -2,22 +2,22 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const FileUploader = ({ fieldChange, mediaUrl }) => {
-  const [file, setFile] = useState([]); // Store selected files
   const [fileUrl, setFileUrl] = useState(mediaUrl || ''); // Store URL of selected file or provided mediaUrl
 
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    setFile(acceptedFiles);
+  const toBase64 = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    
-    reader.onloadend = () => {
-      const arrayBuffer = reader.result;
-      const bytes = new Uint8Array(arrayBuffer);
-      fieldChange(bytes); // Send the byte array to the form field
-      setFileUrl(URL.createObjectURL(file)); // For display purposes
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64String = reader.result.split(',')[1]; // Remove the MIME type prefix
+      resolve(base64String);
     };
-    
-    reader.readAsArrayBuffer(file); // Read file as array buffer
+    reader.onerror = (error) => reject(error);
+  });
+
+  const onDrop = useCallback(async (acceptedFiles) => {
+    const base64File = await toBase64(acceptedFiles[0]);
+    fieldChange(base64File);
+    setFileUrl(URL.createObjectURL(acceptedFiles[0])); // Set URL of the first accepted file
   }, [fieldChange]);
 
   const { getRootProps, getInputProps } = useDropzone({
