@@ -9,6 +9,7 @@ const initialState = {
   name: "",
   email: window.localStorage.getItem("email") || "",
   role: window.localStorage.getItem("role") || "",
+  userId: "",
 };
 
 export const loginUser = (payload) => ({
@@ -17,12 +18,13 @@ export const loginUser = (payload) => ({
 });
 
 export const setUserInfo = (payload) => {
-  const { name, id } = payload;
+  const { name, id, userId } = payload;
   return {
     type: GET_INFO,
     payload: {
       name,
       id,
+      userId,
     },
   };
 };
@@ -48,6 +50,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         id: action.payload.id,
         name: action.payload.name,
+        userId: action.payload.userId,
       };
     default:
       return state;

@@ -2,10 +2,11 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import logger from "redux-logger";
 import { thunk } from "redux-thunk";
-import authReducer from "./reducers";
+import authReducer from "./user";
+import walletReducer from "./wallet";
 
 const store = createStore(
-  combineReducers({ authReducer }),
+  combineReducers({ authReducer, walletReducer }),
   applyMiddleware(logger, thunk)
 );
 

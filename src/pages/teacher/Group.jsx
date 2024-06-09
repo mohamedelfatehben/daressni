@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import { getTeacherGroupLectures } from "../../apis/lectures";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getTeacherGroup, updateGroup } from "../../apis/groups";
 import AddLecture from "./AddLecture";
 import Toast from "../../components/common/Toast";
+import PaymentsModal from "./PaymentsModal"; // Import the PaymentsModal component
 
 function Group() {
   const user = useSelector((state) => state.authReducer);
   const [open, setOpen] = useState(false);
+  const [paymentsOpen, setPaymentsOpen] = useState(false); // State to control Payments modal
+  const [selectedStudent, setSelectedStudent] = useState(null); // State to store selected student
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("");
   const [toastMessage, setToastMessage] = useState("");
@@ -35,11 +37,7 @@ function Group() {
           setInitialGroupInfo({
             ...res.data,
           });
-        }
-      });
-      getTeacherGroupLectures(user.id, id).then((res) => {
-        if (res.status === 200) {
-          setLecturesList([...res.data]);
+          setLecturesList([...res.data.lectures]);
         }
       });
     }
@@ -95,9 +93,9 @@ function Group() {
     }
   };
 
-  const handleDeleteStudent = (studentId) => {
-    console.log(`Deleting student with ID: ${studentId}`);
-    // Implement delete logic here
+  const openPaymentsModal = (student) => {
+    setSelectedStudent(student);
+    setPaymentsOpen(true);
   };
 
   const formatDateTime = (isoString) => {
@@ -194,10 +192,10 @@ function Group() {
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap">
                       <button
-                        onClick={() => handleDeleteStudent(student.id)}
-                        className="bg-red-500 text-white px-2 py-1 rounded"
+                        onClick={() => openPaymentsModal(student)}
+                        className="bg-green-500 text-white px-2 py-1 ml-2 rounded"
                       >
-                        Delete
+                        Show Payments
                       </button>
                     </td>
                   </tr>
@@ -235,8 +233,12 @@ function Group() {
             <tbody className="bg-white divide-y divide-gray-200">
               {lecturesList.map((lecture, i) => (
                 <tr key={i}>
-                  <td className="px-6 py-4 whitespace-no-wrap">{lecture.title}</td>
-                  <td className="px-6 py-4 whitespace-no-wrap">{formatDateTime(lecture.date)}</td>
+                  <td className="px-6 py-4 whitespace-no-wrap">
+                    {lecture.title}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap">
+                    {formatDateTime(lecture.date)}
+                  </td>
                   <td className="px-6 py-4 whitespace-no-wrap text-center">
                     <button className="bg-blue-500 text-white px-2 py-1 rounded">
                       View Video
@@ -250,6 +252,13 @@ function Group() {
       </div>
       <Toast type={toastType} message={toastMessage} show={showToast} />
       <AddLecture idGroupe={id} close={() => setOpen(false)} isOpen={open} />
+      <PaymentsModal
+        isOpen={paymentsOpen}
+        close={() => setPaymentsOpen(false)}
+        student={selectedStudent}
+        groupId={id}
+        lectures={lecturesList}
+      />
     </Layout>
   );
 }

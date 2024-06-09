@@ -5,7 +5,7 @@ import Toast from "../components/common/Toast";
 import { decodeToken } from "react-jwt";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../reducers";
+import { loginUser } from "../redux/user";
 import { Link } from "react-router-dom";
 
 // Header Component
@@ -212,7 +212,7 @@ function Login() {
       })
       .catch((error) => {
         console.error("Login failed:", error);
-        handleShowToast("error", error || "Login failed");
+        handleShowToast("error", error.response.statusText || "Login failed");
       });
 
     setEmailError("");

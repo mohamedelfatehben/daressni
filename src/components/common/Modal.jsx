@@ -14,13 +14,13 @@ export default function Modal({ close, isOpen, title, content }) {
       <Transition appear show={isOpen}>
         <Dialog
           as="div"
-          className="relative z-10 focus:outline-none"
+          className="relative z-50 focus:outline-none"
           onClose={() => {
             close();
           }}
           __demoMode
         >
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-black/30">
+          <div className="fixed inset-0 z-50 w-screen overflow-y-auto bg-black/30">
             <div className="flex min-h-full items-center justify-center p-4">
               <TransitionChild
                 enter="ease-out duration-300"
@@ -30,7 +30,7 @@ export default function Modal({ close, isOpen, title, content }) {
                 leaveFrom="opacity-100 transform-[scale(100%)]"
                 leaveTo="opacity-0 transform-[scale(95%)]"
               >
-                <DialogPanel className="w-full max-w-md rounded-xl bg-white px-6 py-10 backdrop-blur-2xl relative border">
+                <DialogPanel className="w-full md:w-fit max-w-4xl rounded-xl bg-white px-6 py-10 backdrop-blur-2xl relative border">
                   <span
                     className="text-white text-lg bg-purple-600 rounded p-1 cursor-pointer absolute top-2 right-2"
                     onClick={close}

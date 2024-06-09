@@ -8,6 +8,8 @@ function CourseCard({
   teacher,
   remainingPlaces,
   lecturePrice,
+  JoinGroup,
+  joined,
 }) {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md">
@@ -24,13 +26,17 @@ function CourseCard({
         <p className="text-sm font-semibold text-green-500">
           Lecture Price: {lecturePrice} DA
         </p>
-        {remainingPlaces > 0 && (
-          <div className="flex justify-center">
-            <button className="bg-blue-500 mx-auto text-white px-4 py-2 rounded mt-2">
-              Join
-            </button>
-          </div>
-        )}
+        {window.localStorage.getItem("role") === "student" &&
+          remainingPlaces > 0 && (
+            <div className="flex justify-center">
+              <button
+                className="bg-blue-500 mx-auto text-white px-4 py-2 rounded mt-2"
+                onClick={JoinGroup}
+              >
+                Join
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

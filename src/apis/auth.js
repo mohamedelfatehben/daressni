@@ -7,7 +7,6 @@ export const loginApi = async (user) => {
       `${import.meta.env.VITE_GATEWAY_URL}/auth/users/authenticate`,
       { ...user }
     );
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Login failed:", error);
@@ -64,6 +63,26 @@ export const activateTeacher = async (email) => {
     return response;
   } catch (error) {
     console.error("Activating teacher failed:", error);
+    throw error.response?.data || error;
+  }
+};
+
+// Function to get user wallet
+export const getUserWallet = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${
+        import.meta.env.VITE_GATEWAY_URL
+      }/payment/api/v1/user/${userId}/wallet`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Fetching profile data failed:", error);
     throw error.response?.data || error;
   }
 };

@@ -5,7 +5,6 @@ import { getTeacherDocuments, deleteDocument } from "../../apis/documents";
 import AddDocument from "./AddDocument";
 import DeleteDocument from "./DeleteDocument";
 import { MdDelete } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
 
 function Documents() {
   const [open, setOpen] = useState(false);

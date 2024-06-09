@@ -6,8 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 
 import { useEffect } from "react";
-import { getInfoData } from "./apis/auth";
-import { logoutUser, setUserInfo } from "./reducers";
+import { getInfoData, getUserWallet } from "./apis/auth";
 //teacher pages
 import Groups from "./pages/teacher/Groups";
 import Group from "./pages/teacher/Group";
@@ -19,6 +18,12 @@ import StudentGroup from "./pages/student/Group";
 import StudentPayments from "./pages/student/Payments";
 import Teachers from "./pages/admin/Teachers";
 import Documents from "./pages/teacher/Documents";
+import AdminGroups from "./pages/admin/Groups";
+import { logoutUser, setUserInfo } from "./redux/user";
+import { setWalletInfo } from "./redux/wallet";
+import ForumHome from "./pages/forum/ForumHome";
+import Forum from "./pages/forum/Forum";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,13 +55,14 @@ function App() {
           if (res.status === 200) {
             if (window.localStorage.getItem("role") === "teacher") {
               window.localStorage.setItem("module", res.data.moduleName);
-            } else if (window.localStorage.getItem("role") === "students") {
+            } else if (window.localStorage.getItem("role") === "student") {
               window.localStorage.setItem("specialty", res.data.speciality);
             }
             dispatch(
               setUserInfo({
                 name: res.data.firstName + " " + res.data.lastName,
                 id: res.data.id,
+                userId: res.data.userId,
               })
             );
           }
@@ -69,6 +75,25 @@ function App() {
         });
     }
   }, [user.token]);
+
+  useEffect(() => {
+    if (user.userId) {
+      getUserWallet(user.userId)
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(
+              setWalletInfo({
+                id: res.data.id,
+                balance: res.data.balance,
+              })
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [user.userId]);
   return (
     <BrowserRouter>
       <Routes>
@@ -82,6 +107,9 @@ function App() {
             {user.role === "admin" && (
               <>
                 <Route path="/" element={<Teachers />} />
+                <Route path="/groups" element={<AdminGroups />} />
+                <Route path="/forum" element={<ForumHome />} />
+                <Route path="/forum/:id" element={<Forum />} />
               </>
             )}
             {user.role === "teacher" && (
