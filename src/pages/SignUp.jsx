@@ -162,6 +162,29 @@ function SignUp() {
     }
   };
 
+  const addToDrive = (file) => {
+    return new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        var rawLog = reader.result.split(",")[1];
+        var dataSend = {
+          dataReq: { data: rawLog, name: file.name, type: file.type },
+          fname: "uploadFilesToGoogleDrive",
+        };
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyA99FoDRV1U-qe-nJJIfntQbpH_JW2qr9mWVW2RtD-SingL-MBSNh9N-1wohTaUxUN/exec",
+          { method: "POST", body: JSON.stringify(dataSend) }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            resolve(data.url); // Resolve the promise with the URL
+          })
+          .catch((error) => reject(error));
+      };
+    });
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setForm({
@@ -200,13 +223,19 @@ function SignUp() {
     // Proceed only if there are no errors
     if (!Object.values(newErrors).some((error) => error)) {
       try {
+        let cvLink = "";
+        cvLink = await addToDrive(form.cv);
         setForm({
           ...form,
-          cv: "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
+          cv:
+            cvLink ||
+            "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
         });
         const response = await signUpApi({
           ...form,
-          cv: "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
+          cv:
+            cvLink ||
+            "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
         });
         console.log("Form submitted successfully.", response.data);
         if (form.type === "student") {
@@ -386,7 +415,7 @@ function SignUp() {
                   htmlFor="speciality"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Speciality:
+                  Specialty:
                 </label>
                 <select
                   id="speciality"

@@ -11,6 +11,7 @@ function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [courses, setCourses] = useState([]);
+  const [fetch, setFetch] = useState(true);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -52,7 +53,7 @@ function Home() {
     };
 
     fetchCourses();
-  }, [debouncedSearchQuery, page]);
+  }, [debouncedSearchQuery, page, fetch]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -136,6 +137,7 @@ function Home() {
           setGroup(null);
         }}
         group={group}
+        setFetch={setFetch}
       />
     </Layout>
   );

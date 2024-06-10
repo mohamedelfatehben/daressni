@@ -5,8 +5,11 @@ import { IoIosLogOut } from "react-icons/io";
 import { specialties } from "../utils";
 import { deleteWallet } from "../redux/wallet";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import Deposit from "./student/Deposit";
+import { useState } from "react";
 
 function Navbar() {
+  const [deposit, setDeposit] = useState(false);
   const user = useSelector((state) => state.authReducer);
   const wallet = useSelector((state) => state.walletReducer);
   const navigate = useNavigate();
@@ -57,7 +60,12 @@ function Navbar() {
             <span className="text-gray-700 font-semibold">
               Balance: {wallet.balance} Da
             </span>
-            <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-400">
+            <button
+              onClick={() => {
+                setDeposit(true);
+              }}
+              className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            >
               Deposit
               <RiMoneyDollarCircleFill />
             </button>
@@ -71,6 +79,7 @@ function Navbar() {
           <IoIosLogOut className="text-white text-lg" />
         </button>
       </div>
+      <Deposit isOpen={deposit} close={() => setDeposit(false)} />
     </div>
   );
 }

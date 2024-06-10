@@ -24,6 +24,7 @@ import { setWalletInfo } from "./redux/wallet";
 import ForumHome from "./pages/forum/ForumHome";
 import Forum from "./pages/forum/Forum";
 import "react-toastify/dist/ReactToastify.css";
+import StudentLectures from "./pages/student/Lectures";
 
 function App() {
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ function App() {
 
   useEffect(() => {
     if (user.userId) {
-      getUserWallet(user.userId)
+      getUserWallet(user.id)
         .then((res) => {
           if (res.status === 200) {
             dispatch(
@@ -101,6 +102,7 @@ function App() {
           path="*"
           element={<Navigate to={user.token ? "/" : "/login"} />}
         />
+
         {user.token ? (
           <>
             {user.role !== "admin" && <Route path="/" element={<Home />} />}
@@ -125,6 +127,7 @@ function App() {
               <>
                 <Route path="/student/groups" element={<StudentGroups />} />
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
+                <Route path="/student/lectures" element={<StudentLectures />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
               </>
             )}

@@ -3,15 +3,13 @@ import Layout from "../../components/Layout";
 import { activateTeacher, getTeachers } from "../../apis/teachers";
 import { FaNewspaper, FaUserCheck } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-import Toast from "../../components/common/Toast";
 import ActivateTeacher from "../../components/ActivateTeacher";
+import { toast } from "react-toastify";
 
 function Teachers() {
   const [teacher, setTeacher] = useState(null);
   const [teachers, setTeachers] = useState([]);
-  const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState("");
-  const [toastMessage, setToastMessage] = useState("");
+  const [isActivating, setIsActivating] = useState(false);
 
   useEffect(() => {
     fetchTeachers();
@@ -30,26 +28,16 @@ function Teachers() {
 
   const handleActivateTeacher = async (email) => {
     try {
+      setIsActivating(true);
       const response = await activateTeacher(email);
       console.log(response);
-      setToastType("success");
-      setToastMessage("Teacher account activated successfully");
-      setShowToast(true);
+      toast.success("Teacher account activated successfully");
+      setIsActivating(false);
       setTeacher(null);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2000);
       fetchTeachers(); // Refresh the list of teachers
     } catch (error) {
       console.error("Failed to activate teacher", error);
-      setToastType("error");
-      setToastMessage(
-        error || "An error occurred while activating the teacher"
-      );
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2000);
+      toast.error(error || "An error occurred while activating the teacher");
     }
   };
 
@@ -133,7 +121,6 @@ function Teachers() {
             </tbody>
           </table>
         </div>
-        <Toast type={toastType} message={toastMessage} show={showToast} />
         <ActivateTeacher
           isOpen={teacher !== null}
           close={() => {
@@ -141,6 +128,7 @@ function Teachers() {
           }}
           teacher={teacher}
           activate={() => handleActivateTeacher(teacher?.email)}
+          isActivating={isActivating}
         />
       </div>
     </Layout>

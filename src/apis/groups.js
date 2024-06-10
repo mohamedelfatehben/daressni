@@ -52,6 +52,23 @@ export const addGroup = async (groupe) => {
   }
 };
 
+export const updateGroupByPatch = async (idGroup, payload) => {
+  try {
+    const response = await axios.patch(
+      `${import.meta.env.VITE_GATEWAY_URL}/cours/api/v1/groupes/${idGroup}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
 export const getTeacherModules = async () => {
   try {
     const response = await axios.get(

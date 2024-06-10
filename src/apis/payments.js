@@ -33,3 +33,35 @@ export const payLecture = async (body) => {
     throw error.response?.data;
   }
 };
+export const createPaymentIntent = async (body) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_GATEWAY_URL}/payment/api/v1/transaction`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const confirmPayment = async (body) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_GATEWAY_URL}/payment/api/v1/confirm`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
