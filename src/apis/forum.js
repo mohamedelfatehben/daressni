@@ -90,3 +90,35 @@ export const createPost = async (postDto) => {
     }
 
   };
+
+
+  export const fecthSinglePost = async (postId) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_FORUM_URL}/reply-api/fetch-post-with-replies`,
+        {
+          params: { postId },
+          // headers: {
+          //   Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          // },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response?.data;
+    }
+
+  };
+
+
+  export const updatePost = async (postDtoWithId) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_FORUM_URL}/posts-api/update`,
+        postDtoWithId
+      );
+      return response;
+    } catch (error) {
+      throw error.response?.data;
+    }
+  };

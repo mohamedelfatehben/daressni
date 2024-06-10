@@ -82,7 +82,7 @@ const PostCard = ({ post }) => {
         </div>
 
         <div className='flex gap-3 justify-center items-center'>
-            <Link to={`/update-post/${post.post.postId}`} className={`${user.name !== post.post.userDto.username ? 'hidden' : '' }`}>
+            <Link to={`/forum/update-post/${post.post.postId}`} className={`${user.name !== post.post.userDto.username ? 'hidden' : '' }`}>
               <img src='/img/edit.svg' alt="edit" width={20} height={20} />
             </Link>
             {user.email === post.post.userDto.email && (

@@ -33,11 +33,11 @@ const FileUploader = ({ fieldChange, mediaUrl }) => {
       {...getRootProps()}
     >
       <input className="cursor-pointer" {...getInputProps()} />
-      {fileUrl ? (
+      {fileUrl  ? (
         // Display the uploaded file
         <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
           <img src={fileUrl} alt="uploaded-file" className="h-80 lg:h-[480px] w-full rounded-[24px] object-cover object-top" />
-          <p className="file_uploader-label">Click or drag photo to replace</p>
+          <p className="file_uploader-label">{`Click or drag photo to replace`}</p>
         </div>
       ) : (
         // Display upload instructions
@@ -48,7 +48,7 @@ const FileUploader = ({ fieldChange, mediaUrl }) => {
             width={96}
             height={77}
           />
-          <h3 className="base-medium text-light-2 mb-2 mt-6">Drag photo here</h3>
+          <h3 className="base-medium text-light-2 mb-2 mt-6">{mediaUrl ? "Please you have to choose another image" : "Drag photo here"}</h3>
           <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
           <button className="h-12 bg-[#1F1F22] px-5 text-light-1 flex gap-2 rounded-2xl items-center">
             Select from computer

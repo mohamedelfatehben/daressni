@@ -27,7 +27,7 @@ import { useEffect, useState } from "react";
 import { getStudentGroups, getTeacherGroups } from "@/apis/groups";
 
 import { ToastAction } from "@/utils/ui/toast";
-import { createPost } from "@/apis/forum";
+import { createPost, updatePost } from "@/apis/forum";
 import { toast } from "sonner";
 
 // Validation schema
@@ -43,10 +43,14 @@ const PostValidation = z.object({
 
 const PostForm = ({ post, action }) => {
 
+  
+
   const user = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
 
   const [groups, setGroups] = useState([]);
+
+  // console.log(post)
 
   useEffect(() => {
     if (user.id) {
@@ -64,16 +68,16 @@ const PostForm = ({ post, action }) => {
         });
       }
     }
-    console.log(user)
+    
   }, [user.id, user.role]);
 
   const form = useForm({
     resolver: zodResolver(PostValidation),
     defaultValues: {
-      postTitle: post ? post.postTitle : "",
-      postContent: post ? post.postContent : "",
-      image: post ? post.image : "",
-      group: post ? post.group : "",
+      postTitle: post ? post.post.postTitle : "",
+      postContent: post ? post.post.postContent : "",
+      image: post ? post.post.image : "",
+      group: post ? post.post.userDto.idUserGroup : "",
     },
   });
 
@@ -100,21 +104,49 @@ const PostForm = ({ post, action }) => {
       return;
     }
 
-    try {
-      const response = await createPost(postDto);
-      if (response.status === 201) {
-        console.log(response.data);
-        toast.success('Post Created Successfully')
-        navigate('/forum'); // Redirect to another page if needed
+    if(action ==="Update"){
+
+      const postDtoWithId={
+        postId: post?.post.postId  ,
+        ...postDto
       }
-    } catch (error) {
-      console.error("Error adding document:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An error occurred while adding the document.",
-      });
+
+      
+      try {
+        const response = await updatePost(postDtoWithId);
+        if (response.status === 200) {
+          toast.success('Post Updated Successfully');
+          navigate('/forum/'+post.post.userDto.idUserGroup); // Redirect to another page if needed
+        }
+      } catch (error) {
+        console.error("Error updating document:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An error occurred while updating the document.",
+        });
+      }
+
+      
+    }else{
+
+      try {
+        const response = await createPost(postDto);
+        if (response.status === 201) {
+          console.log(response.data);
+          toast.success('Post Created Successfully')
+          navigate('/forum/'+postDto.userDto.idUserGroup); // Redirect to another page if needed
+        }
+      } catch (error) {
+        console.error("Error adding document:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An error occurred while adding the document.",
+        });
+      }
     }
+
   };
 
   return (
@@ -158,7 +190,7 @@ const PostForm = ({ post, action }) => {
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
-                  mediaUrl={post?.imgUrl}
+                  mediaUrl={post?.post.image}
                 />
               </FormControl>
               <FormMessage />
