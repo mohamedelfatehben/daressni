@@ -48,22 +48,23 @@ const PostForm = ({ post, action }) => {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    if (user.userId) {
+    if (user.id) {
       if (user.role === "student") {
-        getStudentGroups(user.userId).then((res) => {
+        getStudentGroups(user.id).then((res) => {
           if (res.status === 200) {
             setGroups(res.data);
           }
         });
       } else {
-        getTeacherGroups(user.userId).then((res) => {
+        getTeacherGroups(user.id).then((res) => {
           if (res.status === 200) {
             setGroups(res.data);
           }
         });
       }
     }
-  }, [user.userId, user.role]);
+    console.log(user)
+  }, [user.id, user.role]);
 
   const form = useForm({
     resolver: zodResolver(PostValidation),
@@ -83,7 +84,7 @@ const PostForm = ({ post, action }) => {
       userDto: {
         username: user.name,
         email: user.email,
-        idUserGroup: values.group,
+        idUserGroup: Number.isInteger(values.group) ? values.group.toString() : values.group ,
       },
     };
 
@@ -187,8 +188,9 @@ const PostForm = ({ post, action }) => {
                     <SelectGroup>
                       <SelectItem value="general">general</SelectItem>
                       {groups.map((group) => (
-                        <SelectItem key={group.id} value={group.id}>
-                          {group.title}
+                        //to be able to distinguish the general group from normal groups 
+                        <SelectItem key={group.idGroupe} value={ `${group.name ==="general" ? group.name : group.id}`}>
+                          {group.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>

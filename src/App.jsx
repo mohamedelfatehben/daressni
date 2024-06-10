@@ -26,6 +26,7 @@ import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
 import CreatePost from "./pages/forum/pages/CreatePost";
 import { Toaster } from "./utils/ui/toaster";
+import AllGroups from "./pages/forum/pages/AllGroups";
 
 function App() {
   const dispatch = useDispatch();
@@ -132,8 +133,9 @@ function App() {
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
                 <Route path="/forum" element={<ForumHome />} >
-                  <Route path="/forum/:id" element={<Forum />} />
+                  <Route path="/forum/:idGrp" element={<Forum />} />
                   <Route path="/forum/create" element={<CreatePost/>}/>
+                  {/* <Route path="/allGroups" element={<AllGroups/>} /> */}
                 </Route>
                 
               </>
