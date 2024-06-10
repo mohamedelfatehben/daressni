@@ -33,7 +33,7 @@ function Forum() {
   }, [idGrp])
 
   return (
-    <div className=" flex flex-col justify-center items-center gap-4 min-w-[50%] py-5">
+    <div className=" flex flex-col justify-center items-center gap-4 min-w-[70%] py-5">
       {postsWithReplies.map(post=>(
         <PostCard key={post.post.postId} post={post}/>
       ))}

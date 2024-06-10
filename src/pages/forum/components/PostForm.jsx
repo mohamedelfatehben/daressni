@@ -25,9 +25,10 @@ import {
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getStudentGroups, getTeacherGroups } from "@/apis/groups";
-import { useToast } from "@/utils/ui/use-toast";
+
 import { ToastAction } from "@/utils/ui/toast";
 import { createPost } from "@/apis/forum";
+import { toast } from "sonner";
 
 // Validation schema
 const PostValidation = z.object({
@@ -41,7 +42,7 @@ const PostValidation = z.object({
 });
 
 const PostForm = ({ post, action }) => {
-  const { toast } = useToast();
+
   const user = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
 
@@ -103,10 +104,7 @@ const PostForm = ({ post, action }) => {
       const response = await createPost(postDto);
       if (response.status === 201) {
         console.log(response.data);
-        toast({
-          variant: "success",
-          title: "Post created successfully!",
-        });
+        toast.success('Post Created Successfully')
         navigate('/forum'); // Redirect to another page if needed
       }
     } catch (error) {

@@ -4,6 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getStudentGroups } from "@/apis/groups";
 import GroupCard from "../components/GroupCard";
+import { ScrollArea } from "@/utils/ui/scroll-area";
 
 function ForumHome() {
   
@@ -81,11 +82,30 @@ function ForumHome() {
                 Create Post
                 </div>
            </div>
-           <section>
+           <section className="w-full">
             <div className="flex flex-1 relative w-full">
               <Outlet/>
               <div className="border-l border-gray-300"></div>
-              <div className="p-3 w-[40%] overflow-y-scroll h-screen absolute right-0">
+              <ScrollArea className="  rounded-md border w-full h-screen">
+                <div className="p-4 h-screen flex flex-col gap-3 ">
+                  <div className="flex  justify-start items-center gap-5 mt-6">
+                    <img src="/img/group-logo.png" alt="groups"            
+                      width={36}
+                      height={36} /> 
+                    <h2 className="text-2xl font-bold">Forums</h2> 
+                  </div>
+                  <div className="flex flex-col justify-start items-center gap-6 p-9">
+                     {
+                                   activeGroups.map(group=>(
+                                    <GroupCard key={group.idGroupe} group={group}/>
+                                  ))
+                     }
+                  </div>
+
+                </div>
+              </ScrollArea>
+
+              {/* <div className="p-3 w-[40%]  h-screen absolute right-0">
                 <div className="flex flex-1 w-full justify-start items-center gap-5 mt-6">
                   <img src="/img/group-logo.png" alt="groups"            
                      width={36}
@@ -99,7 +119,7 @@ function ForumHome() {
                           ))
                          }
                 </div>
-              </div>
+              </div> */}
             </div>            
            </section>
     {/* //Afficher les groupes w ficher forum generale */}

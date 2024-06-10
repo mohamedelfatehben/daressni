@@ -71,3 +71,22 @@ export const createPost = async (postDto) => {
     }
 
   };
+
+
+  export const deletePost = async (postId) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_FORUM_URL}/posts-api/delete`,
+        {
+          params: { postId },
+          // headers: {
+          //   Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          // },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response?.data;
+    }
+
+  };
