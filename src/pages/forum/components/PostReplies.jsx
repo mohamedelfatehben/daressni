@@ -1,6 +1,25 @@
+
 import React from 'react'
+import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
+import { deleteReply as deleteReplyApi } from '@/apis/forum';
 
 const PostReplies = ({repliesArray}) => {
+
+    const user = useSelector((state) => state.authReducer);
+
+    const deleteReply = async (replyId) => {
+        try {
+          await deleteReplyApi(replyId);
+          toast.success("Reply deleted successfully");
+          window.location.reload(); // Refresh the page to fetch new replies
+        } catch (error) {
+          toast.error("Error deleting reply");
+          console.error("Error deleting reply:", error);
+        }
+      };
+
+    
 
     const replies = repliesArray.map((reply)=>(
         <div 
@@ -18,8 +37,20 @@ const PostReplies = ({repliesArray}) => {
                         </div>
                     </div>
             </div>
-            <div className="comment-body mt-3">
+            <div className="comment-body mt-3 flex justify-between items-center">
             <p>{reply.replyContent}</p>
+            {   user.email === reply.replierEmail &&         
+                <div       onClick={() =>
+                    toast.warning("Would you like to delete the reply", {
+                    //   description: "I see want to delete your reply",
+                      action: {
+                        label: "confirm",
+                        onClick: () => deleteReply(reply.replyId),
+                      },
+                    })
+                  }>
+                <img src="/img/delete.svg" alt="" className='rounded-full w-7 bg-white p-1 cursor-pointer' />
+            </div>}
             </div>
         </div>
     ))
