@@ -34,3 +34,22 @@ export const createPost = async (postDto) => {
       throw error.response?.data;
     }
   };
+
+
+  export const createReply = async (ReplyDto) => {
+    try {
+      const response = await axios.post(
+        
+        `${import.meta.env.VITE_FORUM_URL}/reply-api/create`,
+        ReplyDto,
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        //   },
+        // }
+      );
+      return response;
+    } catch (error) {
+      throw error.response?.data;
+    }
+  };

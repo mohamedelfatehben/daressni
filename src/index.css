@@ -184,4 +184,14 @@
       @apply flex justify-center items-center;
     }
 
+    .comment {
+      @apply bg-dark-4 shadow-md rounded-md p-4 mb-4;
+    }
+    .comment-header {
+      @apply flex justify-between items-center;
+    }
+    .comment-body {
+      @apply mt-4 bg-primary-500 rounded-md p-3 text-light-2 ;
+    }
+
   }
