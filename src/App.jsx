@@ -138,7 +138,7 @@ function App() {
                   <Route path="/forum/:idGrp" element={<Forum />} />
                   <Route path="/forum/create" element={<CreatePost/>}/>
                   <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
-                  {/* <Route path="/allGroups" element={<AllGroups/>} /> */}
+                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
                 </Route>
                 
               </>
