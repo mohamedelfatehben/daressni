@@ -11,6 +11,8 @@ import { Textarea } from '@/utils/ui/textarea';
 import { useForm, Controller } from 'react-hook-form';
 import { createReply, deletePost as deletePostApi } from '@/apis/forum'; // Import the deletePost API function
 import { toast } from 'sonner';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/utils/ui/hover-card';
+import ToggleReplies from './ToggleReplies';
 
 const PostCard = ({ post }) => {
   const [showReplies, setShowReplies] = useState(false);
@@ -108,9 +110,6 @@ const PostCard = ({ post }) => {
         <div className="small-medium lg:base-medium py-5">
           <p className='flex-center gap-2 text-light-3'>{post.post.postContent}</p>
           <ul className="flex gap-1 mt-2">
-            {/* {post.tags?.map((tag) => (
-              <li className="text-light-3" key={tag}>#{tag}</li>
-            ))} */}
           </ul>
         </div>
         <img
@@ -119,28 +118,9 @@ const PostCard = ({ post }) => {
           className="post-card_img"
         />
       </div>
-      <Collapsible
-        open={showReplies}
-        onOpenChange={setShowReplies}
-        className="w-full space-y-2 bg-white rounded-lg p-2"
-      >
-        <div className="flex items-center justify-between space-x-4 px-4">
-          <div className='flex gap-2 w-full items-center'>
-            <div className="rounded-md border px-4 py-3 font-mono text-sm w-full font-bold">
-              {showReplies ? 'Hide Replies' : 'Show Replies'}
-            </div>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm" className="w-9 p-0">
-                <ChevronsUpDown className="h-4 w-4" />
-                
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        <CollapsibleContent className="space-y-2">
-          <PostReplies repliesArray={post.replies} userId={user.id} />
-        </CollapsibleContent>
-      </Collapsible>
+
+      <ToggleReplies showReplies={showReplies} setShowReplies={setShowReplies} 
+      replies={post.replies} userId={user.id}/>
 
       <Collapsible
         open={showComment}

@@ -32,11 +32,12 @@ import { toast } from "sonner";
 
 // Validation schema
 const PostValidation = z.object({
-  postTitle: z.string().min(1, { message: "Title is required" }),
+  postTitle: z.string().min(1, { message: "Title is required" })
+                        .max(40, { message: "Maximum 200 characters" }),
   postContent: z
     .string()
     .min(5, { message: "Minimum 5 characters." })
-    .max(2200, { message: "Maximum 2,200 characters" }),
+    .max(200, { message: "Maximum 200 characters" }),
   image: z.string().nonempty({ message: "Image is required" }), // Adjusted for Base64 string
   group: z.string().min(1, { message: "This field is required" }),
 });

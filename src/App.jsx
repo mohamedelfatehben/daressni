@@ -26,8 +26,6 @@ import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
 import CreatePost from "./pages/forum/pages/CreatePost";
 import UpdatePost from "./pages/forum/pages/UpdatePost";
-// import { Toaster } from "./utils/ui/toaster";
-import AllGroups from "./pages/forum/pages/AllGroups";
 import { Toaster } from "sonner";
 
 function App() {
