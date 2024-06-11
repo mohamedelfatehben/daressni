@@ -65,3 +65,38 @@ export const confirmPayment = async (body) => {
     throw error.response?.data;
   }
 };
+
+export const getTransactions = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${
+        import.meta.env.VITE_GATEWAY_URL
+      }/payment/api/v1/users/${userId}/transactions`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const getTeacherTransactions = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${
+        import.meta.env.VITE_GATEWAY_URL
+      }/payment/api/v1/teachers/${userId}/transactions`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};

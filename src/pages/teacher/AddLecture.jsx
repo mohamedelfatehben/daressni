@@ -103,7 +103,7 @@ export default function AddLecture({ lectureData, idGroupe, close, isOpen }) {
               >
                 <option value={""}>Select doc</option>
                 {documents.map((doc) => (
-                  <option key={doc.idDocument} value={doc.idDocument}>
+                  <option key={doc.idDocument} value={+doc.idDocument}>
                     {doc.name}
                   </option>
                 ))}

@@ -16,7 +16,7 @@ thead {
   color: white;
 }
 
-thead th {
+thead tr {
   position: -webkit-sticky; /* For Safari */
   position: sticky;
   top: 0;

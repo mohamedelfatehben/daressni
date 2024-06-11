@@ -52,14 +52,16 @@ const PaymentsModal = ({ isOpen, close, group, lectures }) => {
 
     if (wallet.balance >= totalAmount) {
       setIsPaying(true);
-      payLecture({
+      const body = {
         typeId: 1,
         lectureIds: selectedLectures,
         walletId: wallet.id,
         amount: totalAmount,
         teacherId: group.idTeacher,
         groupId: group.idGroupe,
-      })
+      };
+      console.log(body);
+      payLecture({ ...body })
         .then((res) => {
           setIsPaying(false);
           if (res.status === 201) {
@@ -77,6 +79,7 @@ const PaymentsModal = ({ isOpen, close, group, lectures }) => {
     }
   };
 
+  console.log(selectedLectures);
   return (
     <Modal
       isOpen={isOpen}

@@ -13,11 +13,13 @@ function Documents() {
   const user = useSelector((state) => state.authReducer);
 
   useEffect(() => {
-    getTeacherDocuments(user.id).then((res) => {
-      if (res.status === 200) {
-        setDocuments([...res.data]);
-      }
-    });
+    if (user.id) {
+      getTeacherDocuments(user.id).then((res) => {
+        if (res.status === 200) {
+          setDocuments([...res.data]);
+        }
+      });
+    }
   }, [user.id]);
 
   // Function to handle document deletion

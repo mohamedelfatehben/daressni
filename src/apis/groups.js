@@ -69,6 +69,28 @@ export const updateGroupByPatch = async (idGroup, payload) => {
   }
 };
 
+export const deleteStudentFromGroup = async (
+  idGroupe,
+  idTeacher,
+  idStudent
+) => {
+  try {
+    const response = await axios.delete(
+      `${
+        import.meta.env.VITE_GATEWAY_URL
+      }/cours/api/v1/delete-student-from-groupe/${idGroupe}/${idTeacher}/${idStudent}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
 export const getTeacherModules = async () => {
   try {
     const response = await axios.get(

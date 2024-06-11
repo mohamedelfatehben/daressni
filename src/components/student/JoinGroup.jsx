@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import Modal from "../common/Modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signUpToGroup } from "../../apis/groups";
 import Excerpted from "../common/Excerepted";
 import { toast } from "react-toastify";
+import { transaction } from "../../redux/wallet";
 
 function JoinGroup({ ioOpen, close, group, setFetch }) {
   const user = useSelector((state) => state.authReducer);
   const wallet = useSelector((state) => state.walletReducer);
+  const dispatch = useDispatch();
   const [selectedLectures, setSelectedLectures] = useState([]);
   const [isJoining, setIsJoining] = useState(false);
 
@@ -43,6 +45,13 @@ function JoinGroup({ ioOpen, close, group, setFetch }) {
           setIsJoining(false);
           toast.success("Joined the group successfully");
           setFetch((f) => !f);
+          dispatch(
+            transaction({
+              balance:
+                wallet.balance - group.lecturePrice * selectedLectures.length,
+            })
+          );
+          setSelectedLectures([]);
           close();
         }
       })

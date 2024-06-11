@@ -2,20 +2,29 @@ import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getTeacherGroup, updateGroup } from "../../apis/groups";
+import {
+  getTeacherGroup,
+  updateGroup,
+  // deleteLecture,
+  // updateLecture,
+} from "../../apis/groups"; // Assuming deleteLecture and updateLecture are implemented in the API
 import AddLecture from "./AddLecture";
-import Toast from "../../components/common/Toast";
 import PaymentsModal from "./PaymentsModal"; // Import the PaymentsModal component
+import { ToastContainer, toast } from "react-toastify";
+import { FaVideo } from "react-icons/fa6";
+import { RiVideoAddFill } from "react-icons/ri";
+import UpdateLecture from "../../components/teacher/UpdateLecture";
+import { FaEdit } from "react-icons/fa";
 
 function Group() {
   const user = useSelector((state) => state.authReducer);
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false); // State to control Payments modal
+  const [lecture, setLecture] = useState(null); // State to control Payments modal
   const [paymentsOpen, setPaymentsOpen] = useState(false); // State to control Payments modal
   const [selectedStudent, setSelectedStudent] = useState(null); // State to store selected student
-  const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState("");
-  const [toastMessage, setToastMessage] = useState("");
   const { id } = useParams();
+  const [fetchGroup, setFetchGroup] = useState(false);
   const [groupInfo, setGroupInfo] = useState({
     id: 1,
     name: "Group 1",
@@ -41,7 +50,7 @@ function Group() {
         }
       });
     }
-  }, [id, user.id]);
+  }, [id, user.id, fetchGroup]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,22 +83,12 @@ function Group() {
       const response = await updateGroup(id, payload);
       if (response.status === 200) {
         setIsModified(false);
-        setToastType("success");
-        setToastMessage("Group updated successfully");
-        setShowToast(true);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
+        toast.success("Group updated successfully");
         setGroupInfo(response.data);
         setInitialGroupInfo(response.data);
       }
     } catch (error) {
-      setToastType("error");
-      setToastMessage(error.response.textStatus);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2000);
+      toast.error(error.response.textStatus);
     }
   };
 
@@ -106,8 +105,42 @@ function Group() {
     }).format(date);
   };
 
+  const handleConference = async (idLecture, roomId, lectureDate) => {
+    const currentDate = new Date();
+    const lectureDateTime = new Date(lectureDate);
+    const timeDifference = lectureDateTime - currentDate;
+
+    if (timeDifference > 20 * 60 * 1000) {
+      // 20 minutes in milliseconds
+      toast.error(
+        "Conferences can only be created at least 20 minutes before the lecture time."
+      );
+      return;
+    }
+
+    const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+    window.open(
+      `http://localhost:7778/conf/?token=${token}&idLecture=${idLecture}${
+        roomId !== 0 ? `&roomId=${roomId}` : ""
+      }`,
+      "_blank"
+    );
+  };
+
+  const getLectureDelay = (date) => {
+    const currentDate = new Date();
+    const lectureDateTime = new Date(date);
+    const timeDifference = currentDate - lectureDateTime;
+    return timeDifference > 60 * 1000;
+  };
+  const handleUpdateLecture = async (updatedLecture) => {
+    setLecture(updatedLecture);
+    setUpdateOpen(true);
+  };
+
   return (
     <Layout>
+      <ToastContainer theme="colored" />
       <div className="flex flex-col md:flex-row w-full p-6 ">
         <div className="w-full md:w-1/2 pr-4">
           <h2 className="text-2xl font-bold mb-6">Group Information</h2>
@@ -228,20 +261,66 @@ function Group() {
                 <th className="px-6 py-3 bg-purple-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
                   Conference Video
                 </th>
+                <th className="px-6 py-3 bg-purple-500 text-center text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {lecturesList.map((lecture, i) => (
-                <tr key={i}>
+                <tr
+                  key={i}
+                  className={`${
+                    lecture.roomId === 0 &&
+                    getLectureDelay(lecture.date) &&
+                    "bg-red-200"
+                  }`}
+                >
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {lecture.title}
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {formatDateTime(lecture.date)}
                   </td>
+                  <td className="px-6 py-4 whitespace-no-wrap text-center flex justify-center">
+                    <button
+                      className={`${
+                        lecture.roomId ? "bg-green-600" : "bg-purple-600"
+                      } text-white px-2 py-1 rounded flex w-fit gap-x-2 items-center`}
+                      onClick={() => {
+                        handleConference(
+                          lecture.idLecture,
+                          lecture.roomId,
+                          lecture.date
+                        );
+                      }}
+                    >
+                      {lecture.roomId ? (
+                        <>
+                          <span>Open conference</span>
+                          <FaVideo />
+                        </>
+                      ) : (
+                        <>
+                          <span>Create conference</span>
+                          <RiVideoAddFill />
+                        </>
+                      )}
+                    </button>
+                  </td>
                   <td className="px-6 py-4 whitespace-no-wrap text-center">
-                    <button className="bg-blue-500 text-white px-2 py-1 rounded">
-                      View Video
+                    {/* <button
+                      className="bg-red-500 text-white px-2 py-1 rounded mr-2"
+                      onClick={() => handleDeleteLecture(lecture.idLecture)}
+                    >
+                      Delete
+                    </button> */}
+                    <button
+                      onClick={() => handleUpdateLecture(lecture)}
+                      className="text-blue-600 text-lg hover:text-blue-900"
+                      title="Edit"
+                    >
+                      <FaEdit />
                     </button>
                   </td>
                 </tr>
@@ -250,7 +329,6 @@ function Group() {
           </table>
         </div>
       </div>
-      <Toast type={toastType} message={toastMessage} show={showToast} />
       <AddLecture idGroupe={id} close={() => setOpen(false)} isOpen={open} />
       <PaymentsModal
         isOpen={paymentsOpen}
@@ -258,6 +336,15 @@ function Group() {
         student={selectedStudent}
         groupId={id}
         lectures={lecturesList}
+      />
+      <UpdateLecture
+        open={updateOpen}
+        lecture={lecture}
+        close={() => {
+          setLecture(null);
+          setUpdateOpen(false);
+        }}
+        setFetch={setFetchGroup}
       />
     </Layout>
   );

@@ -22,7 +22,7 @@ export default function Modal({ close, isOpen, title, content }) {
           __demoMode
         >
           <div className="fixed inset-0 z-50 w-screen overflow-y-auto bg-black/30">
-            <ToastContainer theme="colored" />
+            <ToastContainer theme="colored" className="z-[1000]" />
             <div className="flex min-h-full items-center justify-center p-4">
               <TransitionChild
                 enter="ease-out duration-300"

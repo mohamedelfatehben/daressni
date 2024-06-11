@@ -64,7 +64,10 @@ function AdminGroups() {
                   {/* Limit the length to 12 characters */}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-nowrap">
-                  Minimum Must Pay Lectures Number
+                  <Excerpted
+                    length={12}
+                    text={"Minimum must pay number of lectures"}
+                  />
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
                   Actions

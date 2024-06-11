@@ -39,6 +39,13 @@ function StudentLectures() {
     console.log(`Pay for lecture ${lectureId}`);
   };
 
+  const handleConference = async (idLecture, roomId) => {
+    const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+    window.open(
+      `http://localhost:7778/conf/?token=${token}&idLecture=${idLecture}&roomId=${roomId}`,
+      "_blank"
+    );
+  };
   return (
     <Layout>
       <div className="w-full p-4">
@@ -145,32 +152,37 @@ function StudentLectures() {
                       ))}
                     </td>
                     <td className={`px-6 py-4 whitespace-nowrap`}>
-                      {lecture.paymentStatus ? (
-                        lecture.roomId ? (
-                          <a
-                            href={lecture.conference?.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-2 py-1 bg-green-500 text-white rounded flex gap-x-1 items-center"
-                          >
-                            <span>Join Conference</span>
-                            <FaVideo />
-                          </a>
+                      <div className="flex justify-center items-center">
+                        {lecture.paymentStatus ? (
+                          lecture.roomId ? (
+                            <div
+                              onClick={() => {
+                                handleConference(
+                                  lecture.idLecture,
+                                  lecture.roomId
+                                );
+                              }}
+                              className="px-2 py-1 w-fit cursor-pointer bg-green-500 text-white rounded flex gap-x-1 items-center"
+                            >
+                              <span>Join Conference</span>
+                              <FaVideo />
+                            </div>
+                          ) : (
+                            <span className="px-2 w-fit py-1 bg-gray-500 text-white rounded flex gap-x-1 items-center">
+                              <span>No Room</span>
+                              <MdOutlineVideocamOff />
+                            </span>
+                          )
                         ) : (
-                          <span className="px-2 w-fit py-1 bg-gray-500 text-white rounded flex gap-x-1 items-center">
-                            <span>No Room</span>
-                            <MdOutlineVideocamOff />
-                          </span>
-                        )
-                      ) : (
-                        <button
-                          onClick={() => handlePayment(lecture.idLecture)}
-                          className="px-2 py-1 bg-purple-600 text-white rounded flex gap-x-1 items-center hover:bg-purple-700 duration-75"
-                        >
-                          <span>Pay</span>
-                          <BsCash />
-                        </button>
-                      )}
+                          <button
+                            onClick={() => handlePayment(lecture.idLecture)}
+                            className="px-2 py-1 bg-purple-600 text-white rounded flex gap-x-1 items-center hover:bg-purple-700 duration-75"
+                          >
+                            <span>Pay</span>
+                            <BsCash />
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

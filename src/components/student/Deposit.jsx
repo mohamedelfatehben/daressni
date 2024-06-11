@@ -63,7 +63,7 @@ const PaymentForm = () => {
           teacherId: null,
           groupId: null,
         });
-        dispatch(transaction({ balance: wallet.balance + amount }));
+        dispatch(transaction({ balance: parseFloat(amount) + wallet.balance }));
         toast.success("Payment successful");
       }
     } catch (err) {

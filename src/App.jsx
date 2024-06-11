@@ -25,6 +25,7 @@ import ForumHome from "./pages/forum/ForumHome";
 import Forum from "./pages/forum/Forum";
 import "react-toastify/dist/ReactToastify.css";
 import StudentLectures from "./pages/student/Lectures";
+import Statistics from "./pages/teacher/Statistics";
 
 function App() {
   const dispatch = useDispatch();
@@ -121,6 +122,7 @@ function App() {
                 <Route path="/teacher/payments" element={<Payments />} />
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
+                <Route path="/teacher/statistics" element={<Statistics />} />
               </>
             )}
             {user.role === "student" && (
