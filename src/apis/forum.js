@@ -122,3 +122,21 @@ export const createPost = async (postDto) => {
       throw error.response?.data;
     }
   };
+
+
+  export const filterPostsByContentAndIdGroup = async (content,idGroup) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_FORUM_URL}/reply-api/fetch-all-posts-filter-by-content`,
+        {
+          params: { content,idGroup },
+          // headers: {
+          //   Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          // },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error.response?.data;
+    }
+  };
