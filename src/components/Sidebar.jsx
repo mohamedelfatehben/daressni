@@ -42,6 +42,28 @@ const Sidebar = () => {
       href: "/" + window.localStorage.getItem("role") + "/documents",
     },
     {
+      title: "Lectures",
+      src: "lecture",
+      authorized:
+        window.localStorage.getItem("role") === "teacher" ||
+        window.localStorage.getItem("role") === "student",
+      href: "/" + window.localStorage.getItem("role") + "/lectures",
+    },
+    {
+      title: "Transactions",
+      src: "payment",
+      authorized:
+        window.localStorage.getItem("role") === "teacher" ||
+        window.localStorage.getItem("role") === "student",
+      href: "/" + window.localStorage.getItem("role") + "/payments",
+    },
+    {
+      title: "Statistics",
+      src: "analytics",
+      authorized: window.localStorage.getItem("role") === "teacher",
+      href: "/" + window.localStorage.getItem("role") + "/statistics",
+    },
+    {
       title: "Forums",
       src: "Forums",
       authorized: true, 

@@ -24,6 +24,8 @@ import { setWalletInfo } from "./redux/wallet";
 import ForumHome from "./pages/forum/pages/ForumHome";
 import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
+import StudentLectures from "./pages/student/Lectures";
+import Statistics from "./pages/teacher/Statistics";
 import CreatePost from "./pages/forum/pages/CreatePost";
 import UpdatePost from "./pages/forum/pages/UpdatePost";
 import { Toaster } from "sonner";
@@ -81,7 +83,7 @@ function App() {
 
   useEffect(() => {
     if (user.userId) {
-      getUserWallet(user.userId)
+      getUserWallet(user.id)
         .then((res) => {
           if (res.status === 200) {
             dispatch(
@@ -104,6 +106,7 @@ function App() {
           path="*"
           element={<Navigate to={user.token ? "/" : "/login"} />}
         />
+
         {user.token ? (
           <>
             {user.role !== "admin" && <Route path="/" element={<Home />} />}
@@ -121,6 +124,7 @@ function App() {
                 <Route path="/teacher/payments" element={<Payments />} />
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
+                <Route path="/teacher/statistics" element={<Statistics />} />
                 <Route path="/forum" element={<ForumHome />} >
                   <Route path="/forum/:idGrp" element={<Forum />} />
                   <Route path="/forum/create" element={<CreatePost/>}/>
@@ -134,6 +138,7 @@ function App() {
               <>
                 <Route path="/student/groups" element={<StudentGroups />} />
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
+                <Route path="/student/lectures" element={<StudentLectures />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
                 <Route path="/forum" element={<ForumHome />} >
                   <Route path="/forum/:idGrp" element={<Forum />} />

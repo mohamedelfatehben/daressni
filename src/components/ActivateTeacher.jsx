@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import Modal from "./common/Modal";
+import Spinner from "./common/Spinner";
 
-function ActivateTeacher({ isOpen, close, teacher, activate }) {
+function ActivateTeacher({ isOpen, close, teacher, activate, isActivating }) {
   return (
     <Modal
       close={close}
@@ -34,14 +35,15 @@ function ActivateTeacher({ isOpen, close, teacher, activate }) {
             >
               Display cv
             </a>
-            <div
+            <button
               className="relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md cursor-pointer text-white bg-purple-600 hover:bg-purple-700  "
               onClick={() => {
                 activate();
               }}
+              disabled={isActivating}
             >
-              Activate
-            </div>
+              {isActivating ? <Spinner /> : "Activate"}
+            </button>
           </div>
         </>
       }

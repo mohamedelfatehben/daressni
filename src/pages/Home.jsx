@@ -4,11 +4,14 @@ import Layout from "../components/Layout";
 import { searchGroupes } from "../apis/groups.js";
 import JoinGroup from "../components/student/JoinGroup.jsx";
 import { specialties } from "../utils/index.js";
+import { useSelector } from "react-redux";
 
 function Home() {
+  const user = useSelector((state) => state.authReducer);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [courses, setCourses] = useState([]);
+  const [fetch, setFetch] = useState(true);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -50,7 +53,7 @@ function Home() {
     };
 
     fetchCourses();
-  }, [debouncedSearchQuery, page]);
+  }, [debouncedSearchQuery, page, fetch]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -80,44 +83,53 @@ function Home() {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            courses.map((course) => (
-              <CourseCard
-                key={course.idGroupe}
-                title={course.name}
-                module={course.module.name}
-                specialty={specialties[`${course.module.speciality.name}`]}
-                cover={course.image}
-                teacher={
-                  course.teacher?.firstName + " " + course.teacher?.lastName
-                }
-                remainingPlaces={course.max - course.students.length}
-                lecturePrice={course.lecturePrice}
-                JoinGroup={() => {
-                  setGroup(course);
-                }}
-              />
-            ))
+            courses.map((course) => {
+              return (
+                <CourseCard
+                  key={course.idGroupe}
+                  title={course.name}
+                  module={course.module.name}
+                  specialty={specialties[`${course.module.speciality.name}`]}
+                  cover={course.image}
+                  teacher={
+                    course.teacher?.firstName + " " + course.teacher?.lastName
+                  }
+                  remainingPlaces={course.max - course.students.length}
+                  lecturePrice={course.lecturePrice}
+                  JoinGroup={() => {
+                    setGroup(course);
+                  }}
+                  joined={
+                    window.localStorage.getItem("role") === "student" &&
+                    course.students?.some((s) => s.idStudent === user.id) ===
+                      true
+                  }
+                />
+              );
+            })
           )}
         </div>
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 0}
-            className="px-4 py-2 mx-2 bg-gray-300 rounded"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2 mx-2">
-            {page + 1} of {totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages - 1}
-            className="px-4 py-2 mx-2 bg-gray-300 rounded"
-          >
-            Next
-          </button>
-        </div>
+        {totalPages > 0 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 0}
+              className="px-4 py-2 mx-2 bg-purple-600 text-white rounded"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2 mx-2">
+              {page + 1} of {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages - 1}
+              className="px-4 py-2 mx-2 bg-purple-600 text-white rounded"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
       <JoinGroup
         ioOpen={!!group}
@@ -125,6 +137,7 @@ function Home() {
           setGroup(null);
         }}
         group={group}
+        setFetch={setFetch}
       />
     </Layout>
   );

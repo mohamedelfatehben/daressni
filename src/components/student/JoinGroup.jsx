@@ -1,30 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import Modal from "../common/Modal";
-import { useSelector } from "react-redux";
-import Toast from "../common/Toast";
+import { useDispatch, useSelector } from "react-redux";
 import { signUpToGroup } from "../../apis/groups";
 import Excerpted from "../common/Excerepted";
+import { toast } from "react-toastify";
+import { transaction } from "../../redux/wallet";
 
-function JoinGroup({ ioOpen, close, group }) {
+function JoinGroup({ ioOpen, close, group, setFetch }) {
   const user = useSelector((state) => state.authReducer);
   const wallet = useSelector((state) => state.walletReducer);
-  const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState("");
-  const [toastMessage, setToastMessage] = useState("");
+  const dispatch = useDispatch();
   const [selectedLectures, setSelectedLectures] = useState([]);
   const [isJoining, setIsJoining] = useState(false);
-
-  const handleShowToast = (type, message) => {
-    setToastType(type);
-    setToastMessage(message);
-    setShowToast(true);
-
-    // Automatically hide the toast after 3 seconds
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
-  };
 
   const toggleLectureSelection = (lectureId) => {
     setSelectedLectures((prevSelected) => {
@@ -38,8 +26,7 @@ function JoinGroup({ ioOpen, close, group }) {
 
   const joinGroup = async () => {
     if (selectedLectures.length < group.minMustPayLecturesNumber) {
-      handleShowToast(
-        "error",
+      toast.error(
         `You need to select at least ${group.minMustPayLecturesNumber} lectures.`
       );
       return;
@@ -56,12 +43,20 @@ function JoinGroup({ ioOpen, close, group }) {
       .then((res) => {
         if (res.status === 200) {
           setIsJoining(false);
-          handleShowToast("success", "Joined the group successfully");
+          toast.success("Joined the group successfully");
+          setFetch((f) => !f);
+          dispatch(
+            transaction({
+              balance:
+                wallet.balance - group.lecturePrice * selectedLectures.length,
+            })
+          );
+          setSelectedLectures([]);
           close();
         }
       })
       .catch((err) => {
-        handleShowToast("error", err);
+        toast.error(err);
         setIsJoining(false);
       });
   };
@@ -166,7 +161,6 @@ function JoinGroup({ ioOpen, close, group }) {
               )}
             </div>
           </div>
-          <Toast type={toastType} message={toastMessage} show={showToast} />
         </>
       }
       title={"Join group"}

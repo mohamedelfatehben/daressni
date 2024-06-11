@@ -10,38 +10,8 @@ import Excerpted from "../../components/common/Excerepted";
 
 function Groups() {
   const [open, setOpen] = useState(false);
-  const [groups, setGroups] = useState([
-    // {
-    //   idGroupe: 1,
-    //   name: "Group 1",
-    //   image: "https://placehold.co/600x400",
-    //   lecturePrice: 500,
-    //   max: 20,
-    //   students: [1, 2, 3, 4, 5],
-    //   status: "PENDING",
-    //   specialty: "Math",
-    // },
-    // {
-    //   idGroupe: 2,
-    //   name: "Group 2",
-    //   image: "https://placehold.co/600x400",
-    //   lecturePrice: 400,
-    //   max: 15,
-    //   students: [1, 2, 3],
-    //   status: "ACTIVE",
-    //   specialty: "Science",
-    // },
-    // {
-    //   idGroupe: 3,
-    //   name: "Group 3",
-    //   image: "https://placehold.co/600x400",
-    //   lecturePrice: 600,
-    //   max: 25,
-    //   students: [1, 2, 3, 4, 5, 6, 7],
-    //   status: "INACTIVE",
-    //   specialty: "History",
-    // },
-  ]);
+  const [groups, setGroups] = useState([]);
+  const [currentGroup, setCurrentGroup] = useState({ idGroupe: "", name: "" }); // State to hold the current group being edited
   const user = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -65,6 +35,16 @@ function Groups() {
       default:
         return "";
     }
+  };
+
+  const handleEdit = (group) => {
+    setCurrentGroup(group);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setCurrentGroup({ idGroupe: "", name: "" });
   };
 
   return (
@@ -137,14 +117,14 @@ function Groups() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{group.max}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {+group.max - +group.students.length}
+                      {+group.max - +group.students?.length}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Excerpted
                         length={16}
                         text={
-                          specialties[`${group.module.speciality.name}`] ||
-                          group.module.speciality.name
+                          specialties[`${group.module?.speciality?.name}`] ||
+                          group.module?.speciality?.name
                         }
                         bottom={true}
                       />
@@ -171,6 +151,7 @@ function Groups() {
                       </button>
 
                       <button
+                        onClick={() => handleEdit(group)}
                         className="text-blue-600 text-lg hover:text-blue-900"
                         title="Edit"
                       >
@@ -190,7 +171,11 @@ function Groups() {
           </table>
         </div>
       </div>
-      <AddGroupe isOpen={open} close={() => setOpen(false)} />
+      <AddGroupe
+        isOpen={open}
+        close={handleClose}
+        groupeData={currentGroup} // Pass the current group data to the modal
+      />
     </Layout>
   );
 }
