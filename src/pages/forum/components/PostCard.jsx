@@ -25,7 +25,9 @@ const PostCard = ({ post }) => {
     },
   });
 
-  const timeToBeCalculated = post.updatedAt == null ? post.createdAt : post.post.createdAt;
+  const timeToBeCalculated = post.updatedAt === null ? post.createdAt : post.updatedAt;
+
+  // console.log(post)
 
   const onSubmitReply = async (values) => {
     const replyDto = {
