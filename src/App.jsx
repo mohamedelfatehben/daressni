@@ -121,9 +121,12 @@ function App() {
                 <Route path="/teacher/payments" element={<Payments />} />
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
-                <Route path="/forum" element={<ForumHome />} />
-                <Route path="/forum/:id" element={<Forum />} />
-                <Route path="/forum/create" element={<CreatePost/>}/>
+                <Route path="/forum" element={<ForumHome />} >
+                  <Route path="/forum/:idGrp" element={<Forum />} />
+                  <Route path="/forum/create" element={<CreatePost/>}/>
+                  <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
+                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
+                </Route>
                 
               </>
             )}
@@ -137,8 +140,7 @@ function App() {
                   <Route path="/forum/create" element={<CreatePost/>}/>
                   <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
                   <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
-                </Route>
-                
+                </Route>               
               </>
             )}
           </>

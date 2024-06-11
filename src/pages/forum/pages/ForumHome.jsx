@@ -2,7 +2,7 @@ import { useEffect ,useState} from "react";
 import Layout from "../../../components/Layout";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getStudentGroups } from "@/apis/groups";
+import { getStudentGroups,getTeacherGroups } from "@/apis/groups";
 import GroupCard from "../components/GroupCard";
 import { ScrollArea } from "@/utils/ui/scroll-area";
 
@@ -60,7 +60,7 @@ function ForumHome() {
       } else {
         getTeacherGroups(user.id).then((res) => {
           if (res.status === 200) {
-            setGroups(res.data);
+            // setGroups(res.data);
           }
         });
       }
