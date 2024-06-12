@@ -60,7 +60,7 @@ function ForumHome() {
       } else {
         getTeacherGroups(user.id).then((res) => {
           if (res.status === 200) {
-            // setGroups(res.data);
+          //  setGroups(res.data);
           }
         });
       }
