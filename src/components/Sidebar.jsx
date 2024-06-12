@@ -29,12 +29,6 @@ const Sidebar = () => {
           : "/groups",
     },
     {
-      title: "Students",
-      src: "students",
-      authorized: window.localStorage.getItem("role") === "teacher",
-      href: "/" + window.localStorage.getItem("role") + "/students",
-    },
-    {
       title: "Documents",
       src: "documents",
       authorized: window.localStorage.getItem("role") === "teacher",
@@ -74,19 +68,12 @@ const Sidebar = () => {
     >
       <div className="flex items-center justify-center">
         <img
-          src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315"
-          className={`cursor-pointer duration-500 w-12 ${
+          src="/img/hak.png"
+          className={`cursor-pointer duration-500 w-28 ${
             open && "rotate-[360deg]"
           }`}
           alt="logo"
         />
-        <h1
-          className={`text-gray-900 origin-left font-extrabold text-xl duration-200 ml-4 ${
-            !open && "hidden"
-          }`}
-        >
-          Daressni
-        </h1>
       </div>
       <ul className="pt-6">
         {Menus.map((Menu, index) => {

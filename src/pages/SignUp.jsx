@@ -3,6 +3,7 @@ import { useState } from "react";
 import { signUpApi } from "../apis/auth";
 import Toast from "../components/common/Toast";
 import { Link } from "react-router-dom";
+import Spinner from "../components/common/Spinner";
 
 const specialties = {
   Moy_1: "Middle School Year 1",
@@ -39,11 +40,7 @@ function Header({ heading, paragraph, linkName, linkUrl = "#" }) {
   return (
     <div className="mb-10">
       <div className="flex justify-center">
-        <img
-          alt=""
-          className="h-14 w-14"
-          src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315"
-        />
+        <img alt="" className="h-14 w-14" src="/img/hak.png" />
       </div>
       <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
         {heading}
@@ -104,6 +101,7 @@ function FormAction({
   type = "Button",
   action = "submit",
   text,
+  isSubmitting,
 }) {
   return (
     <>
@@ -113,7 +111,7 @@ function FormAction({
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
           onSubmit={handleSubmit}
         >
-          {text}
+          {isSubmitting ? <Spinner /> : text}
         </button>
       ) : (
         <></>
@@ -123,6 +121,7 @@ function FormAction({
 }
 
 function SignUp() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -222,15 +221,18 @@ function SignUp() {
 
     // Proceed only if there are no errors
     if (!Object.values(newErrors).some((error) => error)) {
+      setIsSubmitting(true);
       try {
         let cvLink = "";
-        cvLink = await addToDrive(form.cv);
-        setForm({
-          ...form,
-          cv:
-            cvLink ||
-            "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
-        });
+        if (form.type === "teacher") {
+          cvLink = await addToDrive(form.cv);
+          setForm({
+            ...form,
+            cv:
+              cvLink ||
+              "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg",
+          });
+        }
         const response = await signUpApi({
           ...form,
           cv:
@@ -498,7 +500,11 @@ function SignUp() {
               </div>
             )}
 
-            <FormAction handleSubmit={handleSubmit} text="Sign Up" />
+            <FormAction
+              handleSubmit={handleSubmit}
+              text="Sign Up"
+              isSubmitting={isSubmitting}
+            />
           </form>
         ) : (
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
