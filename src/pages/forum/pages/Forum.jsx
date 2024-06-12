@@ -11,6 +11,9 @@ function Forum() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms debounce delay
 
+
+  console.log(postsWithReplies)
+
   const fetchPosts = async (content = "") => {
     const fetchPromise = new Promise(async (resolve, reject) => {
       try {
