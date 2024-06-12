@@ -100,3 +100,19 @@ export const getTeacherTransactions = async (userId) => {
     throw error.response?.data;
   }
 };
+
+export const getTeachers = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_GATEWAY_URL}/auth/users/teachers-wallet`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};

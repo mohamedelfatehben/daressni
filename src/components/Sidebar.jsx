@@ -38,9 +38,7 @@ const Sidebar = () => {
     {
       title: "Lectures",
       src: "lecture",
-      authorized:
-        window.localStorage.getItem("role") === "teacher" ||
-        window.localStorage.getItem("role") === "student",
+      authorized: window.localStorage.getItem("role") === "student",
       href: "/" + window.localStorage.getItem("role") + "/lectures",
     },
     {
@@ -59,10 +57,10 @@ const Sidebar = () => {
     },
     {
       title: "Forums",
-      src: "Forums",
-      authorized: true, 
-      href: "/forum", 
-    }
+      src: "forum",
+      authorized: window.localStorage.getItem("role") !== "admin",
+      href: "/forum",
+    },
   ];
 
   return (
@@ -99,7 +97,7 @@ const Sidebar = () => {
               >
                 <img
                   src={`/img/${Menu.src}.png`}
-                  className='w-6'
+                  className="w-6"
                   alt={`${Menu.title} icon`}
                 />
                 <span

@@ -60,20 +60,22 @@ function Navbar() {
             <span className="text-gray-700 font-semibold">
               Balance: {wallet.balance} Da
             </span>
-            <button
-              onClick={() => {
-                setDeposit(true);
-              }}
-              className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-            >
-              Deposit
-              <RiMoneyDollarCircleFill />
-            </button>
+            {window.localStorage.getItem("role") === "student" && (
+              <button
+                onClick={() => {
+                  setDeposit(true);
+                }}
+                className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+              >
+                Deposit
+                <RiMoneyDollarCircleFill />
+              </button>
+            )}
           </>
         )}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400"
+          className="flex items-center gap-2 bg-red text-white px-4 py-2 rounded hover:bg-red-400"
         >
           Logout
           <IoIosLogOut className="text-white text-lg" />

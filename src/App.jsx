@@ -29,6 +29,7 @@ import Statistics from "./pages/teacher/Statistics";
 import CreatePost from "./pages/forum/pages/CreatePost";
 import UpdatePost from "./pages/forum/pages/UpdatePost";
 import { Toaster } from "sonner";
+import TeachersPayments from "./pages/admin/Payments";
 
 function App() {
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ function App() {
               <>
                 <Route path="/" element={<Teachers />} />
                 <Route path="/groups" element={<AdminGroups />} />
-                
+                <Route path="/admin/payments" element={<TeachersPayments />} />
               </>
             )}
             {user.role === "teacher" && (
@@ -125,13 +126,19 @@ function App() {
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
                 <Route path="/teacher/statistics" element={<Statistics />} />
-                <Route path="/forum" element={<ForumHome />} >
+                <Route path="/forum" element={<ForumHome />}>
                   <Route path="/forum/:idGrp" element={<Forum />} />
-                  <Route path="/forum/create" element={<CreatePost/>}/>
-                  <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
-                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
+                  <Route path="/forum/create" element={<CreatePost />} />
+                  <Route
+                    path="/forum/update-post/:id"
+                    element={<UpdatePost />}
+                  />
+                  <Route
+                    path="/forum"
+                    element={<Navigate to="/forum/general" />}
+                  />{" "}
+                  {/* this is the first route that appears when loading forum */}
                 </Route>
-                
               </>
             )}
             {user.role === "student" && (
@@ -140,12 +147,19 @@ function App() {
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
                 <Route path="/student/lectures" element={<StudentLectures />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
-                <Route path="/forum" element={<ForumHome />} >
+                <Route path="/forum" element={<ForumHome />}>
                   <Route path="/forum/:idGrp" element={<Forum />} />
-                  <Route path="/forum/create" element={<CreatePost/>}/>
-                  <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
-                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
-                </Route>               
+                  <Route path="/forum/create" element={<CreatePost />} />
+                  <Route
+                    path="/forum/update-post/:id"
+                    element={<UpdatePost />}
+                  />
+                  <Route
+                    path="/forum"
+                    element={<Navigate to="/forum/general" />}
+                  />{" "}
+                  {/* this is the first route that appears when loading forum */}
+                </Route>
               </>
             )}
           </>
@@ -156,8 +170,7 @@ function App() {
           </>
         )}
       </Routes>
-      <Toaster/>
-      
+      <Toaster />
     </BrowserRouter>
   );
 }

@@ -139,7 +139,7 @@ function Groups() {
                         {group.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap flex gap-x-2 justify-center text-xl">
+                    <td className="px-6 py-4 whitespace-nowrap flex gap-x-2 justify-center items-center text-xl">
                       <button>
                         <a
                           href={`/teacher/groups/${group.idGroupe}`}
@@ -156,12 +156,6 @@ function Groups() {
                         title="Edit"
                       >
                         <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 text-lg hover:text-red-900"
-                        title="Delete"
-                      >
-                        <MdDelete />
                       </button>
                     </td>
                   </tr>
