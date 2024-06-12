@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import AddGroupe from "./AddGroupe";
 import { FaInfoCircle, FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { specialties } from "../../utils";
+import { specialties } from "../../utils/index";
 import Excerpted from "../../components/common/Excerepted";
 
 function Groups() {

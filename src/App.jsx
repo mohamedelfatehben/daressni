@@ -21,11 +21,14 @@ import Documents from "./pages/teacher/Documents";
 import AdminGroups from "./pages/admin/Groups";
 import { logoutUser, setUserInfo } from "./redux/user";
 import { setWalletInfo } from "./redux/wallet";
-import ForumHome from "./pages/forum/ForumHome";
-import Forum from "./pages/forum/Forum";
+import ForumHome from "./pages/forum/pages/ForumHome";
+import Forum from "./pages/forum/pages/Forum";
 import "react-toastify/dist/ReactToastify.css";
 import StudentLectures from "./pages/student/Lectures";
 import Statistics from "./pages/teacher/Statistics";
+import CreatePost from "./pages/forum/pages/CreatePost";
+import UpdatePost from "./pages/forum/pages/UpdatePost";
+import { Toaster } from "sonner";
 
 function App() {
   const dispatch = useDispatch();
@@ -111,8 +114,7 @@ function App() {
               <>
                 <Route path="/" element={<Teachers />} />
                 <Route path="/groups" element={<AdminGroups />} />
-                <Route path="/forum" element={<ForumHome />} />
-                <Route path="/forum/:id" element={<Forum />} />
+                
               </>
             )}
             {user.role === "teacher" && (
@@ -123,6 +125,13 @@ function App() {
                 <Route path="/teacher/students" element={<Students />} />
                 <Route path="/teacher/documents" element={<Documents />} />
                 <Route path="/teacher/statistics" element={<Statistics />} />
+                <Route path="/forum" element={<ForumHome />} >
+                  <Route path="/forum/:idGrp" element={<Forum />} />
+                  <Route path="/forum/create" element={<CreatePost/>}/>
+                  <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
+                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
+                </Route>
+                
               </>
             )}
             {user.role === "student" && (
@@ -131,6 +140,12 @@ function App() {
                 <Route path="/student/groups/:id" element={<StudentGroup />} />
                 <Route path="/student/lectures" element={<StudentLectures />} />
                 <Route path="/student/payments" element={<StudentPayments />} />
+                <Route path="/forum" element={<ForumHome />} >
+                  <Route path="/forum/:idGrp" element={<Forum />} />
+                  <Route path="/forum/create" element={<CreatePost/>}/>
+                  <Route path="/forum/update-post/:id" element={<UpdatePost/>} />
+                  <Route path="/forum" element={<Navigate to="/forum/general" />} />  {/* this is the first route that appears when loading forum */}
+                </Route>               
               </>
             )}
           </>
@@ -141,6 +156,8 @@ function App() {
           </>
         )}
       </Routes>
+      <Toaster/>
+      
     </BrowserRouter>
   );
 }

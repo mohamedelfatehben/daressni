@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/user";
 import { IoIosLogOut } from "react-icons/io";
-import { specialties } from "../utils";
+import { specialties } from "../utils/index";
 import { deleteWallet } from "../redux/wallet";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import Deposit from "./student/Deposit";

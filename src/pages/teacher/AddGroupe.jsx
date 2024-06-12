@@ -7,7 +7,7 @@ import {
   updateGroupByPatch,
 } from "../../apis/groups";
 import { useSelector } from "react-redux";
-import { specialties } from "../../utils";
+import { specialties } from "../../utils/index";
 import Spinner from "../../components/common/Spinner";
 
 const daysOfWeek = [
